@@ -1,0 +1,154 @@
+No files changed, compilation skipped
+
+Ran 13 tests for test/RegulatorView.t.sol:RegulatorViewTest
+[PASS] test_EmptyHistoryForUnknownAddress() (gas: 64822)
+[PASS] test_NonOwnerCannotSetRegulatorRole() (gas: 36866)
+[PASS] test_NonRegulatorCannotGetFullDetails() (gas: 282835)
+[PASS] test_NonRegulatorCannotGetTransferCount() (gas: 309069)
+[PASS] test_NonRegulatorCannotGetTransferHistory() (gas: 311013)
+[PASS] test_OwnerCanCallRegulatorFunctions() (gas: 311258)
+[PASS] test_OwnerCanRevokeRegulatorRole() (gas: 77216)
+[PASS] test_OwnerCanSetRegulatorRole() (gas: 56898)
+[PASS] test_RecordAndRetrieveTransferHistory() (gas: 639704)
+[PASS] test_RegulatorGetsFullDetails() (gas: 465232)
+[PASS] test_RegulatorSeesRevokedStatus() (gas: 415212)
+[PASS] test_TransferCount() (gas: 881440)
+[PASS] test_TransferHistoryRecordedForBothParties() (gas: 395211)
+Suite result: ok. 13 passed; 0 failed; 0 skipped; finished in 5.34ms (4.59ms CPU time)
+
+Ran 24 tests for test/ComplianceGateway.t.sol:ComplianceGatewayTest
+[PASS] test_AttestEmitsEvent() (gas: 270051)
+[PASS] test_AuthorizedWorkflowCanRevoke() (gas: 374804)
+[PASS] test_AuthorizedWorkflowCanSubmitAttestation() (gas: 342433)
+[PASS] test_CannotAttestForZeroAddress() (gas: 38097)
+[PASS] test_CannotAuthorizeZeroAddress() (gas: 32185)
+[PASS] test_DeploymentSetsOwner() (gas: 9926)
+[PASS] test_GetAttestationReturnsCorrectData() (gas: 296484)
+[PASS] test_GetAttestationReturnsEmptyForUnknownAddress() (gas: 25089)
+[PASS] test_IndependentAttestationsPerAddress() (gas: 662687)
+[PASS] test_IsCompliantFalseAfterExpiry() (gas: 318297)
+[PASS] test_IsCompliantFalseForNoAttestation() (gas: 19863)
+[PASS] test_IsCompliantTrueForValidAttestation() (gas: 286881)
+[PASS] test_NonOwnerCannotAuthorizeWorkflow() (gas: 37043)
+[PASS] test_OwnerCanAuthorizeWorkflow() (gas: 57003)
+[PASS] test_OwnerCanDeauthorizeWorkflow() (gas: 77358)
+[PASS] test_OwnerCanRevokeAttestation() (gas: 348842)
+[PASS] test_OwnerCanSubmitAttestationDirectly() (gas: 272714)
+[PASS] test_PublicStatusReturnsFalseForNoAttestation() (gas: 10106)
+[PASS] test_PublicStatusReturnsTrueForValidAttestation() (gas: 272616)
+[PASS] test_ReAttestationClearsRevocation() (gas: 409980)
+[PASS] test_ReAttestationOverwritesOld() (gas: 453044)
+[PASS] test_RevokeEmitsEvent() (gas: 324549)
+[PASS] test_UnauthorizedCannotRevoke() (gas: 297898)
+[PASS] test_UnauthorizedCannotSubmitAttestation() (gas: 43209)
+Suite result: ok. 24 passed; 0 failed; 0 skipped; finished in 5.33ms (12.46ms CPU time)
+
+Ran 18 tests for test/ComplianceToken.t.sol:ComplianceTokenTest
+[PASS] test_DeploymentSetsGateway() (gas: 7807)
+[PASS] test_DeploymentSetsNameAndSymbol() (gas: 24554)
+[PASS] test_DeploymentSetsOwner() (gas: 9872)
+[PASS] test_MintingWorksWhilePaused() (gas: 108415)
+[PASS] test_MultipleSequentialTransfersSucceed() (gas: 1149206)
+[PASS] test_NonOwnerCannotMint() (gas: 34932)
+[PASS] test_OwnerCanMintWithoutCompliance() (gas: 81399)
+[PASS] test_PausedTransfersFail() (gas: 655804)
+[PASS] test_TransferExactMaxValueSucceeds() (gas: 690187)
+[PASS] test_TransferFailsAfterReceiverRevocation() (gas: 722217)
+[PASS] test_TransferFailsAfterSenderRevocation() (gas: 808239)
+[PASS] test_TransferFailsWhenExceedingMaxTransferValue() (gas: 668078)
+[PASS] test_TransferFailsWithExpiredReceiverAttestation() (gas: 668630)
+[PASS] test_TransferFailsWithExpiredSenderAttestation() (gas: 661053)
+[PASS] test_TransferFailsWithoutReceiverAttestation() (gas: 400959)
+[PASS] test_TransferFailsWithoutSenderAttestation() (gas: 393329)
+[PASS] test_TransferSucceedsWithValidAttestations() (gas: 709462)
+[PASS] test_UnpauseRestoresTransfers() (gas: 753708)
+Suite result: ok. 18 passed; 0 failed; 0 skipped; finished in 5.46ms (11.81ms CPU time)
+
+╭------------------------------------------------------+-----------------+--------+--------+--------+---------╮
+| src/ComplianceGateway.sol:ComplianceGateway Contract |                 |        |        |        |         |
++=============================================================================================================+
+| Deployment Cost                                      | Deployment Size |        |        |        |         |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| 655092                                               | 2726            |        |        |        |         |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+|                                                      |                 |        |        |        |         |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| Function Name                                        | Min             | Avg    | Median | Max    | # Calls |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| attestCompliance                                     | 28337           | 239414 | 255912 | 345224 | 46      |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| authorizedWorkflows                                  | 2556            | 2556   | 2556   | 2556   | 2       |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| getAttestation                                       | 14599           | 21098  | 20384  | 32326  | 26      |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| getPublicStatus                                      | 2620            | 5556   | 7025   | 7025   | 3       |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| isAttestationValid                                   | 2597            | 5533   | 7002   | 7002   | 3       |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| isCompliant                                          | 2686            | 6124   | 7091   | 7091   | 40      |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| isRevoked                                            | 595             | 1595   | 1595   | 2595   | 6       |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| owner                                                | 2402            | 2402   | 2402   | 2402   | 1       |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| revokeAttestation                                    | 26847           | 50400  | 53543  | 53687  | 9       |
+|------------------------------------------------------+-----------------+--------+--------+--------+---------|
+| setAuthorizedWorkflow                                | 23945           | 36865  | 46375  | 46375  | 7       |
+╰------------------------------------------------------+-----------------+--------+--------+--------+---------╯
+
+╭--------------------------------------------------+-----------------+-------+--------+-------+---------╮
+| src/ComplianceToken.sol:ComplianceToken Contract |                 |       |        |       |         |
++=======================================================================================================+
+| Deployment Cost                                  | Deployment Size |       |        |       |         |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| 952358                                           | 4864            |       |        |       |         |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+|                                                  |                 |       |        |       |         |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| Function Name                                    | Min             | Avg   | Median | Max   | # Calls |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| balanceOf                                        | 2598            | 2598  | 2598   | 2598  | 9       |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| gateway                                          | 283             | 283   | 283    | 283   | 1       |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| mint                                             | 24163           | 67705 | 70813  | 70842 | 15      |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| name                                             | 3214            | 3214  | 3214   | 3214  | 1       |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| owner                                            | 2358            | 2358  | 2358   | 2358  | 1       |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| pause                                            | 26472           | 26472 | 26472  | 26472 | 3       |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| symbol                                           | 3234            | 3234  | 3234   | 3234  | 1       |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| transfer                                         | 24380           | 69926 | 63052  | 92426 | 15      |
+|--------------------------------------------------+-----------------+-------+--------+-------+---------|
+| unpause                                          | 26460           | 26460 | 26460  | 26460 | 1       |
+╰--------------------------------------------------+-----------------+-------+--------+-------+---------╯
+
+╭----------------------------------------------+-----------------+--------+--------+--------+---------╮
+| src/RegulatorView.sol:RegulatorView Contract |                 |        |        |        |         |
++=====================================================================================================+
+| Deployment Cost                              | Deployment Size |        |        |        |         |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| 698449                                       | 3077            |        |        |        |         |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+|                                              |                 |        |        |        |         |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| Function Name                                | Min             | Avg    | Median | Max    | # Calls |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| getFullComplianceDetails                     | 4938            | 30828  | 36602  | 45169  | 4       |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| getTransferCount                             | 4748            | 4805   | 4834   | 4834   | 3       |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| getTransferHistory                           | 4731            | 13838  | 16115  | 27165  | 5       |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| hasRegulatorRole                             | 2534            | 2534   | 2534   | 2534   | 2       |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| recordTransfer                               | 254612          | 275987 | 288812 | 288812 | 8       |
+|----------------------------------------------+-----------------+--------+--------+--------+---------|
+| setRegulatorRole                             | 24135           | 41914  | 46325  | 46325  | 10      |
+╰----------------------------------------------+-----------------+--------+--------+--------+---------╯
+
+
+Ran 3 test suites in 17.20ms (16.13ms CPU time): 55 tests passed, 0 failed, 0 skipped (55 total tests)
