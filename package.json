@@ -1,0 +1,16 @@
+{
+  "name": "crosschain-compliance-gateway",
+  "version": "0.1.0",
+  "description": "Privacy-preserving cross-chain compliance attestations using Chainlink CRE and CCIP",
+  "private": true,
+  "scripts": {},
+  "keywords": [
+    "chainlink",
+    "ccip",
+    "cre",
+    "compliance",
+    "cross-chain",
+    "tokenized-assets"
+  ],
+  "license": "MIT"
+}
