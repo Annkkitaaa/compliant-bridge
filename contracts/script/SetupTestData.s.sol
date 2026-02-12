@@ -88,6 +88,6 @@ contract SetupTestData is Script {
         console.log("");
         console.log("=== Test Data Setup Complete ===");
         console.log("4 attestations submitted to gateway:", gatewayAddr);
-        console.log("addr4 expires in 5 minutes — use it to demo expiry behavior");
+        console.log("addr4 expires in 5 minutes - use it to demo expiry behavior");
     }
 }
