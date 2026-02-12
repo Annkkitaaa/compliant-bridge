@@ -1,8 +1,11 @@
 -include .env
 
-.PHONY: build test deploy-sepolia setup-testdata verify clean
+.PHONY: build test deploy-sepolia deploy-arb-sepolia deploy-base-sepolia \
+        configure-ccip-sepolia configure-ccip-dest configure-ccip \
+        test-crosschain deploy-all setup-testdata verify clean
 
-# Build & Test
+# ── Build & Test ──────────────────────────────────────────────────────
+
 build:
 	forge build
 
@@ -12,41 +15,104 @@ test:
 test-gas:
 	forge test --gas-report
 
-# Deploy to Sepolia
+# ── Deploy ────────────────────────────────────────────────────────────
+
 deploy-sepolia:
+	CCIP_ROUTER=$(CCIP_ROUTER_SEPOLIA) LINK_TOKEN=$(LINK_TOKEN_SEPOLIA) \
 	forge script script/Deploy.s.sol:Deploy \
-		--rpc-url sepolia \
+		--rpc-url $(SEPOLIA_RPC_URL) \
 		--broadcast \
 		--verify \
 		-vvvv
 	@echo ""
-	@echo ">>> Copy the deployed addresses into your .env file <<<"
+	@echo ">>> Copy deployed addresses into .env (SRC_GATEWAY_ADDRESS, etc.) <<<"
 
-# Setup test attestations (run after deploy, after setting GATEWAY_ADDRESS in .env)
-setup-testdata:
-	forge script script/SetupTestData.s.sol:SetupTestData \
-		--rpc-url sepolia \
+deploy-arb-sepolia:
+	CCIP_ROUTER=$(CCIP_ROUTER_ARB_SEPOLIA) LINK_TOKEN=$(LINK_TOKEN_ARB_SEPOLIA) \
+	forge script script/Deploy.s.sol:Deploy \
+		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
+		--broadcast \
+		--verify \
+		-vvvv
+	@echo ""
+	@echo ">>> Copy deployed addresses into .env (DST_GATEWAY_ADDRESS, etc.) <<<"
+
+deploy-base-sepolia:
+	CCIP_ROUTER=$(CCIP_ROUTER_BASE_SEPOLIA) LINK_TOKEN=$(LINK_TOKEN_BASE_SEPOLIA) \
+	forge script script/Deploy.s.sol:Deploy \
+		--rpc-url $(BASE_SEPOLIA_RPC_URL) \
+		--broadcast \
+		--verify \
+		-vvvv
+	@echo ""
+	@echo ">>> Copy deployed addresses into .env (DST_GATEWAY_ADDRESS, etc.) <<<"
+
+# ── Configure CCIP ───────────────────────────────────────────────────
+
+configure-ccip-sepolia:
+	forge script script/ConfigureCCIP.s.sol:ConfigureCCIP \
+		--rpc-url $(SEPOLIA_RPC_URL) \
 		--broadcast \
 		-vvvv
 
-# Verify contracts on Etherscan (if --verify flag didn't work during deploy)
+configure-ccip-dest:
+	forge script script/ConfigureCCIP.s.sol:ConfigureCCIP \
+		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
+
+configure-ccip: configure-ccip-sepolia configure-ccip-dest
+
+# ── Cross-chain Test Flow ────────────────────────────────────────────
+
+test-crosschain-send:
+	PHASE=1 forge script script/TestCrossChain.s.sol:TestCrossChain \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
+
+test-crosschain-verify:
+	PHASE=2 forge script script/TestCrossChain.s.sol:TestCrossChain \
+		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
+		-vvvv
+
+test-crosschain: test-crosschain-send
+	@echo ""
+	@echo ">>> CCIP message sent. Wait 5-20 min, then run: make test-crosschain-verify <<<"
+
+# ── Full Pipeline ────────────────────────────────────────────────────
+
+deploy-all: deploy-sepolia
+	@echo ""
+	@echo ">>> Sepolia deployed. Now update .env with addresses and run: <<<"
+	@echo ">>>   make deploy-arb-sepolia <<<"
+	@echo ">>>   make configure-ccip     <<<"
+
+# ── Setup Test Data (legacy, source chain only) ─────────────────────
+
+setup-testdata:
+	forge script script/SetupTestData.s.sol:SetupTestData \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
+
+# ── Verify Contracts ─────────────────────────────────────────────────
+
 verify:
-	forge verify-contract $(GATEWAY_ADDRESS) src/ComplianceGateway.sol:ComplianceGateway \
+	forge verify-contract $(SRC_GATEWAY_ADDRESS) src/ComplianceGateway.sol:ComplianceGateway \
 		--chain sepolia \
 		--etherscan-api-key $(ETHERSCAN_API_KEY)
 	forge verify-contract $(TOKEN_ADDRESS) src/ComplianceToken.sol:ComplianceToken \
 		--chain sepolia \
 		--etherscan-api-key $(ETHERSCAN_API_KEY) \
-		--constructor-args $$(cast abi-encode "constructor(string,string,address)" "Compliant Bridge Token" "CBT" $(GATEWAY_ADDRESS))
-	forge verify-contract $(REGULATOR_VIEW_ADDRESS) src/RegulatorView.sol:RegulatorView \
-		--chain sepolia \
-		--etherscan-api-key $(ETHERSCAN_API_KEY) \
-		--constructor-args $$(cast abi-encode "constructor(address)" $(GATEWAY_ADDRESS))
+		--constructor-args $$(cast abi-encode "constructor(string,string,address)" "Compliant Bridge Token" "CBT" $(SRC_GATEWAY_ADDRESS))
 
-# Deploy to local Anvil for testing
+# ── Deploy to Local Anvil ────────────────────────────────────────────
+
 deploy-local:
 	anvil &
 	sleep 2
+	CCIP_ROUTER=0x0000000000000000000000000000000000000001 \
 	forge script script/Deploy.s.sol:Deploy \
 		--rpc-url http://127.0.0.1:8545 \
 		--broadcast \
