@@ -9,10 +9,13 @@ contract ComplianceGateway is IComplianceGateway {
     mapping(address => ComplianceAttestation) private _attestations;
     mapping(address => bool) private _revoked;
     mapping(address => bool) public authorizedWorkflows;
+    mapping(address => bool) public authorizedReceivers;
+    mapping(address => bool) public isRemoteAttestation;
 
     error Unauthorized();
     error OnlyOwner();
     error ZeroAddress();
+    error OnlyReceiver();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert OnlyOwner();
@@ -85,6 +88,53 @@ contract ComplianceGateway is IComplianceGateway {
     function isRevoked(address subject) external view returns (bool) {
         return _revoked[subject];
     }
+
+    // ── Cross-chain support ────────────────────────────────────────
+
+    function setAuthorizedReceiver(
+        address receiver,
+        bool authorized
+    ) external onlyOwner {
+        if (receiver == address(0)) revert ZeroAddress();
+        authorizedReceivers[receiver] = authorized;
+    }
+
+    function receiveRemoteAttestation(
+        ComplianceAttestation calldata attestation,
+        uint64 sourceChain
+    ) external {
+        if (!authorizedReceivers[msg.sender]) revert OnlyReceiver();
+        address subject = attestation.subject;
+        if (subject == address(0)) revert ZeroAddress();
+
+        ComplianceAttestation memory stored = attestation;
+        stored.sourceChainId = sourceChain;
+
+        _attestations[subject] = stored;
+        _revoked[subject] = false;
+        isRemoteAttestation[subject] = true;
+
+        emit ComplianceAttested(
+            subject,
+            stored.tier,
+            stored.validUntil,
+            sourceChain
+        );
+    }
+
+    function receiveRemoteRevocation(
+        address subject,
+        string calldata reason
+    ) external {
+        if (!authorizedReceivers[msg.sender]) revert OnlyReceiver();
+
+        bytes32 checkId = _attestations[subject].checkId;
+        _revoked[subject] = true;
+
+        emit AttestationRevoked(subject, checkId, reason);
+    }
+
+    // ── Internal helpers ─────────────────────────────────────────
 
     function _hasAttestation(address subject) internal view returns (bool) {
         return _attestations[subject].issuedAt != 0;
