@@ -11,6 +11,8 @@ remappings = [
   "forge-std/=lib/forge-std/src/",
 ]
 
+fs_permissions = [{ access = "read", path = ".env" }]
+
 [rpc_endpoints]
 sepolia = "${SEPOLIA_RPC_URL}"
 
