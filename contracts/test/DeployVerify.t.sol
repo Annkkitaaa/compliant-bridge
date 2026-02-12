@@ -16,9 +16,9 @@ contract DeployVerifyTest is Test {
 
     address public deployer = address(this);
     address public addr1 = 0xAA00000000000000000000000000000000000001;
-    address public addr2 = 0xAA00000000000000000000000000000000000002;
-    address public addr3 = 0xBB00000000000000000000000000000000000001;
-    address public addr4 = 0xCC00000000000000000000000000000000000001;
+    address public addr2 = 0xAa00000000000000000000000000000000000002;
+    address public addr3 = 0xBb00000000000000000000000000000000000001;
+    address public addr4 = 0xcC00000000000000000000000000000000000001;
     address public nonCompliant = makeAddr("nonCompliant");
 
     function setUp() public {

@@ -13,9 +13,9 @@ contract Deploy is Script {
 
         // Test addresses to receive initial tokens
         address testAddr1 = 0xAA00000000000000000000000000000000000001;
-        address testAddr2 = 0xAA00000000000000000000000000000000000002;
-        address testAddr3 = 0xBB00000000000000000000000000000000000001;
-        address testAddr4 = 0xCC00000000000000000000000000000000000001;
+        address testAddr2 = 0xAa00000000000000000000000000000000000002;
+        address testAddr3 = 0xBb00000000000000000000000000000000000001;
+        address testAddr4 = 0xcC00000000000000000000000000000000000001;
 
         console.log("Deployer:", deployer);
         console.log("Chain ID:", block.chainid);
