@@ -7,7 +7,7 @@ Deploy and configure the Compliant Bridge across Sepolia (source) and Arbitrum S
 - [Foundry](https://book.getfoundry.sh/getting-started/installation) installed
 - Deployer wallet with testnet ETH on both chains
 - Testnet LINK tokens for CCIP fees (or use native ETH)
-- RPC URLs for both chains (e.g., from Alchemy or Infura)
+- RPC URLs for both chains (e.g., from Alchemy or Infura).
 
 ## 1. Environment Setup
 
