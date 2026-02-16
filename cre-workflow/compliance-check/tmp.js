@@ -3782,6 +3782,7 @@ var ListSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 3);
 var DecimalSchema = /* @__PURE__ */ messageDesc(file_values_v1_values, 4);
 var file_sdk_v1alpha_sdk = /* @__PURE__ */ fileDesc("ChVzZGsvdjFhbHBoYS9zZGsucHJvdG8SC3Nkay52MWFscGhhIrQBChVTaW1wbGVDb25zZW5zdXNJbnB1dHMSIQoFdmFsdWUYASABKAsyEC52YWx1ZXMudjEuVmFsdWVIABIPCgVlcnJvchgCIAEoCUgAEjUKC2Rlc2NyaXB0b3JzGAMgASgLMiAuc2RrLnYxYWxwaGEuQ29uc2Vuc3VzRGVzY3JpcHRvchIhCgdkZWZhdWx0GAQgASgLMhAudmFsdWVzLnYxLlZhbHVlQg0KC29ic2VydmF0aW9uIpABCglGaWVsZHNNYXASMgoGZmllbGRzGAEgAygLMiIuc2RrLnYxYWxwaGEuRmllbGRzTWFwLkZpZWxkc0VudHJ5Gk8KC0ZpZWxkc0VudHJ5EgsKA2tleRgBIAEoCRIvCgV2YWx1ZRgCIAEoCzIgLnNkay52MWFscGhhLkNvbnNlbnN1c0Rlc2NyaXB0b3I6AjgBIoYBChNDb25zZW5zdXNEZXNjcmlwdG9yEjMKC2FnZ3JlZ2F0aW9uGAEgASgOMhwuc2RrLnYxYWxwaGEuQWdncmVnYXRpb25UeXBlSAASLAoKZmllbGRzX21hcBgCIAEoCzIWLnNkay52MWFscGhhLkZpZWxkc01hcEgAQgwKCmRlc2NyaXB0b3IiagoNUmVwb3J0UmVxdWVzdBIXCg9lbmNvZGVkX3BheWxvYWQYASABKAwSFAoMZW5jb2Rlcl9uYW1lGAIgASgJEhQKDHNpZ25pbmdfYWxnbxgDIAEoCRIUCgxoYXNoaW5nX2FsZ28YBCABKAkilwEKDlJlcG9ydFJlc3BvbnNlEhUKDWNvbmZpZ19kaWdlc3QYASABKAwSEgoGc2VxX25yGAIgASgEQgIwABIWCg5yZXBvcnRfY29udGV4dBgDIAEoDBISCgpyYXdfcmVwb3J0GAQgASgMEi4KBHNpZ3MYBSADKAsyIC5zZGsudjFhbHBoYS5BdHRyaWJ1dGVkU2lnbmF0dXJlIjsKE0F0dHJpYnV0ZWRTaWduYXR1cmUSEQoJc2lnbmF0dXJlGAEgASgMEhEKCXNpZ25lcl9pZBgCIAEoDSJrChFDYXBhYmlsaXR5UmVxdWVzdBIKCgJpZBgBIAEoCRIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueRIOCgZtZXRob2QYAyABKAkSEwoLY2FsbGJhY2tfaWQYBCABKAUiWgoSQ2FwYWJpbGl0eVJlc3BvbnNlEicKB3BheWxvYWQYASABKAsyFC5nb29nbGUucHJvdG9idWYuQW55SAASDwoFZXJyb3IYAiABKAlIAEIKCghyZXNwb25zZSJYChNUcmlnZ2VyU3Vic2NyaXB0aW9uEgoKAmlkGAEgASgJEiUKB3BheWxvYWQYAiABKAsyFC5nb29nbGUucHJvdG9idWYuQW55Eg4KBm1ldGhvZBgDIAEoCSJVChpUcmlnZ2VyU3Vic2NyaXB0aW9uUmVxdWVzdBI3Cg1zdWJzY3JpcHRpb25zGAEgAygLMiAuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvbiJACgdUcmlnZ2VyEg4KAmlkGAEgASgEQgIwABIlCgdwYXlsb2FkGAIgASgLMhQuZ29vZ2xlLnByb3RvYnVmLkFueSInChhBd2FpdENhcGFiaWxpdGllc1JlcXVlc3QSCwoDaWRzGAEgAygFIrgBChlBd2FpdENhcGFiaWxpdGllc1Jlc3BvbnNlEkgKCXJlc3BvbnNlcxgBIAMoCzI1LnNkay52MWFscGhhLkF3YWl0Q2FwYWJpbGl0aWVzUmVzcG9uc2UuUmVzcG9uc2VzRW50cnkaUQoOUmVzcG9uc2VzRW50cnkSCwoDa2V5GAEgASgFEi4KBXZhbHVlGAIgASgLMh8uc2RrLnYxYWxwaGEuQ2FwYWJpbGl0eVJlc3BvbnNlOgI4ASKgAQoORXhlY3V0ZVJlcXVlc3QSDgoGY29uZmlnGAEgASgMEisKCXN1YnNjcmliZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAEicKB3RyaWdnZXIYAyABKAsyFC5zZGsudjFhbHBoYS5UcmlnZ2VySAASHQoRbWF4X3Jlc3BvbnNlX3NpemUYBCABKARCAjAAQgkKB3JlcXVlc3QimQEKD0V4ZWN1dGlvblJlc3VsdBIhCgV2YWx1ZRgBIAEoCzIQLnZhbHVlcy52MS5WYWx1ZUgAEg8KBWVycm9yGAIgASgJSAASSAoVdHJpZ2dlcl9zdWJzY3JpcHRpb25zGAMgASgLMicuc2RrLnYxYWxwaGEuVHJpZ2dlclN1YnNjcmlwdGlvblJlcXVlc3RIAEIICgZyZXN1bHQiVgoRR2V0U2VjcmV0c1JlcXVlc3QSLAoIcmVxdWVzdHMYASADKAsyGi5zZGsudjFhbHBoYS5TZWNyZXRSZXF1ZXN0EhMKC2NhbGxiYWNrX2lkGAIgASgFIiIKE0F3YWl0U2VjcmV0c1JlcXVlc3QSCwoDaWRzGAEgAygFIqsBChRBd2FpdFNlY3JldHNSZXNwb25zZRJDCglyZXNwb25zZXMYASADKAsyMC5zZGsudjFhbHBoYS5Bd2FpdFNlY3JldHNSZXNwb25zZS5SZXNwb25zZXNFbnRyeRpOCg5SZXNwb25zZXNFbnRyeRILCgNrZXkYASABKAUSKwoFdmFsdWUYAiABKAsyHC5zZGsudjFhbHBoYS5TZWNyZXRSZXNwb25zZXM6AjgBIi4KDVNlY3JldFJlcXVlc3QSCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJIkUKBlNlY3JldBIKCgJpZBgBIAEoCRIRCgluYW1lc3BhY2UYAiABKAkSDQoFb3duZXIYAyABKAkSDQoFdmFsdWUYBCABKAkiSgoLU2VjcmV0RXJyb3ISCgoCaWQYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJEg0KBW93bmVyGAMgASgJEg0KBWVycm9yGAQgASgJIm4KDlNlY3JldFJlc3BvbnNlEiUKBnNlY3JldBgBIAEoCzITLnNkay52MWFscGhhLlNlY3JldEgAEikKBWVycm9yGAIgASgLMhguc2RrLnYxYWxwaGEuU2VjcmV0RXJyb3JIAEIKCghyZXNwb25zZSJBCg9TZWNyZXRSZXNwb25zZXMSLgoJcmVzcG9uc2VzGAEgAygLMhsuc2RrLnYxYWxwaGEuU2VjcmV0UmVzcG9uc2UquAEKD0FnZ3JlZ2F0aW9uVHlwZRIgChxBR0dSRUdBVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASGwoXQUdHUkVHQVRJT05fVFlQRV9NRURJQU4QARIeChpBR0dSRUdBVElPTl9UWVBFX0lERU5USUNBTBACEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1BSRUZJWBADEiIKHkFHR1JFR0FUSU9OX1RZUEVfQ09NTU9OX1NVRkZJWBAEKjkKBE1vZGUSFAoQTU9ERV9VTlNQRUNJRklFRBAAEgwKCE1PREVfRE9OEAESDQoJTU9ERV9OT0RFEAJCaAoPY29tLnNkay52MWFscGhhQghTZGtQcm90b1ABogIDU1hYqgILU2RrLlYxYWxwaGHKAgtTZGtcVjFhbHBoYeICF1Nka1xWMWFscGhhXEdQQk1ldGFkYXRh6gIMU2RrOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_any, file_google_protobuf_empty, file_values_v1_values]);
 var SimpleConsensusInputsSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 0);
+var ConsensusDescriptorSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 2);
 var ReportRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 3);
 var ReportResponseSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 4);
 var CapabilityRequestSchema = /* @__PURE__ */ messageDesc(file_sdk_v1alpha_sdk, 6);
@@ -3836,9 +3837,9 @@ class Report {
     return this.report;
   }
 }
-var file_capabilities_networking_http_v1alpha_client = /* @__PURE__ */ fileDesc("CjFjYXBhYmlsaXRpZXMvbmV0d29ya2luZy9odHRwL3YxYWxwaGEvY2xpZW50LnByb3RvEiRjYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEiSgoNQ2FjaGVTZXR0aW5ncxINCgVzdG9yZRgBIAEoCBIqCgdtYXhfYWdlGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uIqoCCgdSZXF1ZXN0EgsKA3VybBgBIAEoCRIOCgZtZXRob2QYAiABKAkSSwoHaGVhZGVycxgDIAMoCzI6LmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXF1ZXN0LkhlYWRlcnNFbnRyeRIMCgRib2R5GAQgASgMEioKB3RpbWVvdXQYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SSwoOY2FjaGVfc2V0dGluZ3MYBiABKAsyMy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuQ2FjaGVTZXR0aW5ncxouCgxIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKrAQoIUmVzcG9uc2USEwoLc3RhdHVzX2NvZGUYASABKA0STAoHaGVhZGVycxgCIAMoCzI7LmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXNwb25zZS5IZWFkZXJzRW50cnkSDAoEYm9keRgDIAEoDBouCgxIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ATKYAQoGQ2xpZW50EmwKC1NlbmRSZXF1ZXN0Ei0uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QaLi5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UaIIK1GBwIAhIYaHR0cC1hY3Rpb25zQDEuMC4wLWFscGhhQuoBCihjb20uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhQgtDbGllbnRQcm90b1ABogIDQ05IqgIkQ2FwYWJpbGl0aWVzLk5ldHdvcmtpbmcuSHR0cC5WMWFscGhhygIkQ2FwYWJpbGl0aWVzXE5ldHdvcmtpbmdcSHR0cFxWMWFscGhh4gIwQ2FwYWJpbGl0aWVzXE5ldHdvcmtpbmdcSHR0cFxWMWFscGhhXEdQQk1ldGFkYXRh6gInQ2FwYWJpbGl0aWVzOjpOZXR3b3JraW5nOjpIdHRwOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_duration, file_tools_generator_v1alpha_cre_metadata]);
-var RequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 1);
-var ResponseSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 2);
+var file_capabilities_networking_confidentialhttp_v1alpha_client = /* @__PURE__ */ fileDesc("Cj1jYXBhYmlsaXRpZXMvbmV0d29ya2luZy9jb25maWRlbnRpYWxodHRwL3YxYWxwaGEvY2xpZW50LnByb3RvEjBjYXBhYmlsaXRpZXMubmV0d29ya2luZy5jb25maWRlbnRpYWxodHRwLnYxYWxwaGEiUAoQU2VjcmV0SWRlbnRpZmllchILCgNrZXkYASABKAkSEQoJbmFtZXNwYWNlGAIgASgJEhIKBW93bmVyGAMgASgJSACIAQFCCAoGX293bmVyIh4KDEhlYWRlclZhbHVlcxIOCgZ2YWx1ZXMYASADKAkivwQKC0hUVFBSZXF1ZXN0EgsKA3VybBgBIAEoCRIOCgZtZXRob2QYAiABKAkSFQoLYm9keV9zdHJpbmcYAyABKAlIABIUCgpib2R5X2J5dGVzGAggASgMSAASZgoNbXVsdGlfaGVhZGVycxgEIAMoCzJPLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmNvbmZpZGVudGlhbGh0dHAudjFhbHBoYS5IVFRQUmVxdWVzdC5NdWx0aUhlYWRlcnNFbnRyeRJ3ChZ0ZW1wbGF0ZV9wdWJsaWNfdmFsdWVzGAUgAygLMlcuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuY29uZmlkZW50aWFsaHR0cC52MWFscGhhLkhUVFBSZXF1ZXN0LlRlbXBsYXRlUHVibGljVmFsdWVzRW50cnkSHwoXY3VzdG9tX3Jvb3RfY2FfY2VydF9wZW0YBiABKAwSKgoHdGltZW91dBgHIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhpzChFNdWx0aUhlYWRlcnNFbnRyeRILCgNrZXkYASABKAkSTQoFdmFsdWUYAiABKAsyPi5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5jb25maWRlbnRpYWxodHRwLnYxYWxwaGEuSGVhZGVyVmFsdWVzOgI4ARo7ChlUZW1wbGF0ZVB1YmxpY1ZhbHVlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCBgoEYm9keSKPAgoMSFRUUFJlc3BvbnNlEhMKC3N0YXR1c19jb2RlGAEgASgNEgwKBGJvZHkYAiABKAwSZwoNbXVsdGlfaGVhZGVycxgDIAMoCzJQLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmNvbmZpZGVudGlhbGh0dHAudjFhbHBoYS5IVFRQUmVzcG9uc2UuTXVsdGlIZWFkZXJzRW50cnkacwoRTXVsdGlIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEk0KBXZhbHVlGAIgASgLMj4uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuY29uZmlkZW50aWFsaHR0cC52MWFscGhhLkhlYWRlclZhbHVlczoCOAEi4AEKF0NvbmZpZGVudGlhbEhUVFBSZXF1ZXN0El0KEXZhdWx0X2Rvbl9zZWNyZXRzGAEgAygLMkIuY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuY29uZmlkZW50aWFsaHR0cC52MWFscGhhLlNlY3JldElkZW50aWZpZXISTgoHcmVxdWVzdBgCIAEoCzI9LmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmNvbmZpZGVudGlhbGh0dHAudjFhbHBoYS5IVFRQUmVxdWVzdBIWCg5lbmNyeXB0X291dHB1dBgDIAEoCDLKAQoGQ2xpZW50EpgBCgtTZW5kUmVxdWVzdBJJLmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmNvbmZpZGVudGlhbGh0dHAudjFhbHBoYS5Db25maWRlbnRpYWxIVFRQUmVxdWVzdBo+LmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmNvbmZpZGVudGlhbGh0dHAudjFhbHBoYS5IVFRQUmVzcG9uc2UaJYK1GCEIAhIdY29uZmlkZW50aWFsLWh0dHBAMS4wLjAtYWxwaGFCpgIKNGNvbS5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5jb25maWRlbnRpYWxodHRwLnYxYWxwaGFCC0NsaWVudFByb3RvUAGiAgNDTkOqAjBDYXBhYmlsaXRpZXMuTmV0d29ya2luZy5Db25maWRlbnRpYWxodHRwLlYxYWxwaGHKAjBDYXBhYmlsaXRpZXNcTmV0d29ya2luZ1xDb25maWRlbnRpYWxodHRwXFYxYWxwaGHiAjxDYXBhYmlsaXRpZXNcTmV0d29ya2luZ1xDb25maWRlbnRpYWxodHRwXFYxYWxwaGFcR1BCTWV0YWRhdGHqAjNDYXBhYmlsaXRpZXM6Ok5ldHdvcmtpbmc6OkNvbmZpZGVudGlhbGh0dHA6OlYxYWxwaGFiBnByb3RvMw", [file_google_protobuf_duration, file_tools_generator_v1alpha_cre_metadata]);
+var HTTPResponseSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_confidentialhttp_v1alpha_client, 3);
+var ConfidentialHTTPRequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_confidentialhttp_v1alpha_client, 4);
 
 class SendRequester {
   runtime;
@@ -3853,6 +3854,64 @@ class SendRequester {
 }
 
 class ClientCapability {
+  static CAPABILITY_ID = "confidential-http@1.0.0-alpha";
+  static CAPABILITY_NAME = "confidential-http";
+  static CAPABILITY_VERSION = "1.0.0-alpha";
+  sendRequest(...args) {
+    if (typeof args[1] === "function") {
+      const [runtime2, fn, consensusAggregation, unwrapOptions] = args;
+      return this.sendRequestSugarHelper(runtime2, fn, consensusAggregation, unwrapOptions);
+    }
+    const [runtime, input] = args;
+    return this.sendRequestCallHelper(runtime, input);
+  }
+  sendRequestCallHelper(runtime, input) {
+    let payload;
+    if (input.$typeName) {
+      payload = input;
+    } else {
+      payload = fromJson(ConfidentialHTTPRequestSchema, input);
+    }
+    const capabilityId = ClientCapability.CAPABILITY_ID;
+    const capabilityResponse = runtime.callCapability({
+      capabilityId,
+      method: "SendRequest",
+      payload,
+      inputSchema: ConfidentialHTTPRequestSchema,
+      outputSchema: HTTPResponseSchema
+    });
+    return {
+      result: () => {
+        const result = capabilityResponse.result();
+        return result;
+      }
+    };
+  }
+  sendRequestSugarHelper(runtime, fn, consensusAggregation, unwrapOptions) {
+    const wrappedFn = (runtime2, ...args) => {
+      const sendRequester = new SendRequester(runtime2, this);
+      return fn(sendRequester, ...args);
+    };
+    return runtime.runInNodeMode(wrappedFn, consensusAggregation, unwrapOptions);
+  }
+}
+var file_capabilities_networking_http_v1alpha_client = /* @__PURE__ */ fileDesc("CjFjYXBhYmlsaXRpZXMvbmV0d29ya2luZy9odHRwL3YxYWxwaGEvY2xpZW50LnByb3RvEiRjYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEiSgoNQ2FjaGVTZXR0aW5ncxINCgVzdG9yZRgBIAEoCBIqCgdtYXhfYWdlGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uIqoCCgdSZXF1ZXN0EgsKA3VybBgBIAEoCRIOCgZtZXRob2QYAiABKAkSSwoHaGVhZGVycxgDIAMoCzI6LmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXF1ZXN0LkhlYWRlcnNFbnRyeRIMCgRib2R5GAQgASgMEioKB3RpbWVvdXQYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SSwoOY2FjaGVfc2V0dGluZ3MYBiABKAsyMy5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuQ2FjaGVTZXR0aW5ncxouCgxIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKrAQoIUmVzcG9uc2USEwoLc3RhdHVzX2NvZGUYASABKA0STAoHaGVhZGVycxgCIAMoCzI7LmNhcGFiaWxpdGllcy5uZXR3b3JraW5nLmh0dHAudjFhbHBoYS5SZXNwb25zZS5IZWFkZXJzRW50cnkSDAoEYm9keRgDIAEoDBouCgxIZWFkZXJzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ATKYAQoGQ2xpZW50EmwKC1NlbmRSZXF1ZXN0Ei0uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhLlJlcXVlc3QaLi5jYXBhYmlsaXRpZXMubmV0d29ya2luZy5odHRwLnYxYWxwaGEuUmVzcG9uc2UaIIK1GBwIAhIYaHR0cC1hY3Rpb25zQDEuMC4wLWFscGhhQuoBCihjb20uY2FwYWJpbGl0aWVzLm5ldHdvcmtpbmcuaHR0cC52MWFscGhhQgtDbGllbnRQcm90b1ABogIDQ05IqgIkQ2FwYWJpbGl0aWVzLk5ldHdvcmtpbmcuSHR0cC5WMWFscGhhygIkQ2FwYWJpbGl0aWVzXE5ldHdvcmtpbmdcSHR0cFxWMWFscGhh4gIwQ2FwYWJpbGl0aWVzXE5ldHdvcmtpbmdcSHR0cFxWMWFscGhhXEdQQk1ldGFkYXRh6gInQ2FwYWJpbGl0aWVzOjpOZXR3b3JraW5nOjpIdHRwOjpWMWFscGhhYgZwcm90bzM", [file_google_protobuf_duration, file_tools_generator_v1alpha_cre_metadata]);
+var RequestSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 1);
+var ResponseSchema = /* @__PURE__ */ messageDesc(file_capabilities_networking_http_v1alpha_client, 2);
+
+class SendRequester2 {
+  runtime;
+  client;
+  constructor(runtime, client) {
+    this.runtime = runtime;
+    this.client = client;
+  }
+  sendRequest(input) {
+    return this.client.sendRequest(this.runtime, input);
+  }
+}
+
+class ClientCapability2 {
   static CAPABILITY_ID = "http-actions@1.0.0-alpha";
   static CAPABILITY_NAME = "http-actions";
   static CAPABILITY_VERSION = "1.0.0-alpha";
@@ -3871,7 +3930,7 @@ class ClientCapability {
     } else {
       payload = fromJson(RequestSchema, input);
     }
-    const capabilityId = ClientCapability.CAPABILITY_ID;
+    const capabilityId = ClientCapability2.CAPABILITY_ID;
     const capabilityResponse = runtime.callCapability({
       capabilityId,
       method: "SendRequest",
@@ -3888,7 +3947,7 @@ class ClientCapability {
   }
   sendRequestSugarHelper(runtime, fn, consensusAggregation, unwrapOptions) {
     const wrappedFn = (runtime2, ...args) => {
-      const sendRequester = new SendRequester(runtime2, this);
+      const sendRequester = new SendRequester2(runtime2, this);
       return fn(sendRequester, ...args);
     };
     return runtime.runInNodeMode(wrappedFn, consensusAggregation, unwrapOptions);
@@ -5267,6 +5326,28 @@ var LATEST_BLOCK_NUMBER = {
   absVal: Buffer.from([2]).toString("base64"),
   sign: "-1"
 };
+var decodeJson = (input) => {
+  const decoder = new TextDecoder("utf-8");
+  const textBody = decoder.decode(input);
+  return JSON.parse(textBody);
+};
+function json(responseOrFn) {
+  if (typeof responseOrFn === "function") {
+    return {
+      result: () => json(responseOrFn().result)
+    };
+  }
+  return decodeJson(responseOrFn.body);
+}
+function ok(responseOrFn) {
+  if (typeof responseOrFn === "function") {
+    return {
+      result: () => ok(responseOrFn().result)
+    };
+  } else {
+    return responseOrFn.statusCode >= 200 && responseOrFn.statusCode < 300;
+  }
+}
 function sendReport(runtime, report, fn) {
   const rawReport = report.x_generatedCodeOnly_unwrap();
   const request = fn(rawReport);
@@ -5277,8 +5358,8 @@ function sendRequesterSendReport(report, fn) {
   const request = fn(rawReport);
   return this.sendRequest(request);
 }
-ClientCapability.prototype.sendReport = sendReport;
-SendRequester.prototype.sendReport = sendRequesterSendReport;
+ClientCapability2.prototype.sendReport = sendReport;
+SendRequester2.prototype.sendReport = sendRequesterSendReport;
 var network = {
   chainId: "1",
   chainSelector: {
@@ -8895,6 +8976,33 @@ var defaultLookup = new NetworkLookup({
   testnetBySelector,
   testnetBySelectorByFamily
 });
+function consensusIdenticalAggregation() {
+  return simpleConsensus(AggregationType.IDENTICAL);
+}
+
+class ConsensusImpl {
+  descriptor;
+  defaultValue;
+  constructor(descriptor, defaultValue) {
+    this.descriptor = descriptor;
+    this.defaultValue = defaultValue;
+  }
+  withDefault(t) {
+    return new ConsensusImpl(this.descriptor, t);
+  }
+  _usesUToForceShape(_) {}
+}
+function simpleConsensus(agg) {
+  return new ConsensusImpl(simpleDescriptor(agg));
+}
+function simpleDescriptor(agg) {
+  return create(ConsensusDescriptorSchema, {
+    descriptor: {
+      case: "aggregation",
+      value: agg
+    }
+  });
+}
 
 class Int64 {
   static INT64_MIN = -(2n ** 63n);
@@ -9509,8 +9617,8 @@ var ZodIssueCode = util.arrayToEnum([
   "not_finite"
 ]);
 var quotelessJson = (obj) => {
-  const json = JSON.stringify(obj, null, 2);
-  return json.replace(/"([^"]+)":/g, "$1:");
+  const json2 = JSON.stringify(obj, null, 2);
+  return json2.replace(/"([^"]+)":/g, "$1:");
 };
 
 class ZodError extends Error {
@@ -13767,20 +13875,231 @@ var sendErrorResponse = (error) => {
   }
   hostBindings.sendResponse(payload);
 };
-var onCronTrigger = (runtime2) => {
-  runtime2.log("Compliance Check Workflow initialized");
-  runtime2.log(`API Base URL: ${runtime2.config.complianceApiBaseUrl}`);
-  runtime2.log(`EVM targets: ${runtime2.config.evms.length}`);
-  return "Compliance Check Workflow executed successfully";
+var configSchema = exports_external.object({
+  schedule: exports_external.string(),
+  complianceApiBaseUrl: exports_external.string(),
+  owner: exports_external.string(),
+  subjectAddress: exports_external.string(),
+  evms: exports_external.array(exports_external.object({
+    chainSelectorName: exports_external.string(),
+    gatewayContractAddress: exports_external.string()
+  }))
+});
+function sanitize(obj) {
+  const raw = obj;
+  const result = {};
+  for (const key of Object.keys(raw)) {
+    result[key] = raw[key] === null || raw[key] === undefined ? "" : raw[key];
+  }
+  return result;
+}
+var fetchSanctionsCheck = (sendRequester, config) => {
+  const response = sendRequester.sendRequest({
+    request: {
+      url: `${config.complianceApiBaseUrl}/sanctions-check`,
+      method: "POST",
+      bodyString: '{"address": "{{.subjectAddress}}"}',
+      multiHeaders: {
+        "Content-Type": { values: ["application/json"] },
+        "x-api-key": { values: ["{{.complianceApiKey}}"] }
+      },
+      templatePublicValues: {
+        subjectAddress: config.subjectAddress
+      }
+    },
+    vaultDonSecrets: [
+      { key: "complianceApiKey", namespace: "compliance", owner: config.owner }
+    ],
+    encryptOutput: false
+  }).result();
+  if (!ok(response)) {
+    throw new Error(`Sanctions check failed with status ${response.statusCode}`);
+  }
+  return sanitize(json(response));
+};
+var fetchKycStatus = (sendRequester, config) => {
+  const response = sendRequester.sendRequest({
+    request: {
+      url: `${config.complianceApiBaseUrl}/kyc-status`,
+      method: "POST",
+      bodyString: '{"address": "{{.subjectAddress}}"}',
+      multiHeaders: {
+        "Content-Type": { values: ["application/json"] },
+        "x-api-key": { values: ["{{.complianceApiKey}}"] }
+      },
+      templatePublicValues: {
+        subjectAddress: config.subjectAddress
+      }
+    },
+    vaultDonSecrets: [
+      { key: "complianceApiKey", namespace: "compliance", owner: config.owner }
+    ],
+    encryptOutput: false
+  }).result();
+  if (!ok(response)) {
+    throw new Error(`KYC status check failed with status ${response.statusCode}`);
+  }
+  return sanitize(json(response));
+};
+var fetchAccreditedInvestor = (sendRequester, config) => {
+  const response = sendRequester.sendRequest({
+    request: {
+      url: `${config.complianceApiBaseUrl}/accredited-investor`,
+      method: "POST",
+      bodyString: '{"address": "{{.subjectAddress}}"}',
+      multiHeaders: {
+        "Content-Type": { values: ["application/json"] },
+        "x-api-key": { values: ["{{.complianceApiKey}}"] }
+      },
+      templatePublicValues: {
+        subjectAddress: config.subjectAddress
+      }
+    },
+    vaultDonSecrets: [
+      { key: "complianceApiKey", namespace: "compliance", owner: config.owner }
+    ],
+    encryptOutput: false
+  }).result();
+  if (!ok(response)) {
+    throw new Error(`Accreditation check failed with status ${response.statusCode}`);
+  }
+  return sanitize(json(response));
+};
+var fetchJurisdictionCheck = (sendRequester, config) => {
+  const response = sendRequester.sendRequest({
+    request: {
+      url: `${config.complianceApiBaseUrl}/jurisdiction-check`,
+      method: "POST",
+      bodyString: '{"address": "{{.subjectAddress}}"}',
+      multiHeaders: {
+        "Content-Type": { values: ["application/json"] },
+        "x-api-key": { values: ["{{.complianceApiKey}}"] }
+      },
+      templatePublicValues: {
+        subjectAddress: config.subjectAddress
+      }
+    },
+    vaultDonSecrets: [
+      { key: "complianceApiKey", namespace: "compliance", owner: config.owner }
+    ],
+    encryptOutput: false
+  }).result();
+  if (!ok(response)) {
+    throw new Error(`Jurisdiction check failed with status ${response.statusCode}`);
+  }
+  return sanitize(json(response));
+};
+function evaluateCompliance(sanctions, kyc, accredited, jurisdiction, nowMs) {
+  const baseResult = {
+    sanctions: { sanctioned: sanctions.sanctioned, source: sanctions.source },
+    kyc: { status: kyc.kycStatus, expiry: kyc.kycExpiry },
+    accreditation: {
+      accredited: accredited.accreditedInvestor,
+      type: accredited.accreditationType
+    },
+    jurisdiction: {
+      jurisdiction: jurisdiction.jurisdiction,
+      restricted: jurisdiction.restricted
+    }
+  };
+  const checkId = `chk_${sanctions.address.slice(2, 10)}_${nowMs}`;
+  if (sanctions.sanctioned) {
+    return {
+      ...baseResult,
+      overallResult: "FAIL",
+      tier: 0,
+      maxTransferValue: 0,
+      validUntil: 0,
+      failureReason: "Address is sanctioned",
+      checkId
+    };
+  }
+  if (kyc.kycStatus !== "approved") {
+    return {
+      ...baseResult,
+      overallResult: "FAIL",
+      tier: 0,
+      maxTransferValue: 0,
+      validUntil: 0,
+      failureReason: `KYC not verified (status: ${kyc.kycStatus})`,
+      checkId
+    };
+  }
+  if (kyc.kycExpiry) {
+    const expiryMs = new Date(kyc.kycExpiry).getTime();
+    if (expiryMs < nowMs) {
+      return {
+        ...baseResult,
+        overallResult: "FAIL",
+        tier: 0,
+        maxTransferValue: 0,
+        validUntil: 0,
+        failureReason: "KYC expired",
+        checkId
+      };
+    }
+  }
+  if (jurisdiction.restricted) {
+    return {
+      ...baseResult,
+      overallResult: "FAIL",
+      tier: 0,
+      maxTransferValue: 0,
+      validUntil: 0,
+      failureReason: `Jurisdiction restricted (${jurisdiction.jurisdiction})`,
+      checkId
+    };
+  }
+  let tier;
+  let maxTransferValue;
+  if (accredited.accreditedInvestor && accredited.accreditationType === "net-worth") {
+    tier = 3;
+    maxTransferValue = 1e7;
+  } else if (accredited.accreditedInvestor) {
+    tier = 2;
+    maxTransferValue = 1e6;
+  } else {
+    tier = 1;
+    maxTransferValue = 1e4;
+  }
+  const validUntil = Math.floor(nowMs / 1000) + 24 * 60 * 60;
+  return {
+    ...baseResult,
+    overallResult: "PASS",
+    tier,
+    maxTransferValue,
+    validUntil,
+    failureReason: "",
+    checkId
+  };
+}
+var onComplianceCheck = (runtime2) => {
+  runtime2.log("Compliance Check Workflow triggered");
+  runtime2.log(`Subject: ${runtime2.config.subjectAddress}`);
+  const confClient = new ClientCapability;
+  const sanctions = confClient.sendRequest(runtime2, fetchSanctionsCheck, consensusIdenticalAggregation())(runtime2.config).result();
+  runtime2.log(`Sanctions check: sanctioned=${sanctions.sanctioned}`);
+  const kyc = confClient.sendRequest(runtime2, fetchKycStatus, consensusIdenticalAggregation())(runtime2.config).result();
+  runtime2.log(`KYC check: status=${kyc.kycStatus}`);
+  const accredited = confClient.sendRequest(runtime2, fetchAccreditedInvestor, consensusIdenticalAggregation())(runtime2.config).result();
+  runtime2.log(`Accreditation check: accredited=${accredited.accreditedInvestor}`);
+  const jurisdiction = confClient.sendRequest(runtime2, fetchJurisdictionCheck, consensusIdenticalAggregation())(runtime2.config).result();
+  runtime2.log(`Jurisdiction check: restricted=${jurisdiction.restricted}`);
+  const nowMs = runtime2.now().getTime();
+  const result = evaluateCompliance(sanctions, kyc, accredited, jurisdiction, nowMs);
+  runtime2.log(`Result: ${result.overallResult} | Tier: ${result.tier} | Max: ${result.maxTransferValue}`);
+  if (result.failureReason) {
+    runtime2.log(`Failure reason: ${result.failureReason}`);
+  }
+  return JSON.stringify(result);
 };
 var initWorkflow = (config) => {
-  const cron = new CronCapability;
   return [
-    handler(cron.trigger({ schedule: config.schedule }), onCronTrigger)
+    handler(new CronCapability().trigger({ schedule: config.schedule }), onComplianceCheck)
   ];
 };
 async function main() {
-  const runner = await Runner.newRunner();
+  const runner = await Runner.newRunner({ configSchema });
   await runner.run(initWorkflow);
 }
 main().catch(sendErrorResponse);
