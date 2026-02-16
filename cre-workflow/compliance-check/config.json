@@ -1,0 +1,10 @@
+{
+  "schedule": "0 */5 * * * *",
+  "complianceApiBaseUrl": "http://localhost:3001/api/v1",
+  "evms": [
+    {
+      "chainSelectorName": "ethereum-testnet-sepolia",
+      "gatewayContractAddress": "<GATEWAY_ADDRESS_FROM_DEPLOYMENT>"
+    }
+  ]
+}
