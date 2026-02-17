@@ -1,3 +1,19 @@
+// ---------------------------------------------------------------------------
+// Compliant Bridge — Chainlink CRE Compliance Workflow
+//
+// Unified workflow: ConfidentialHTTPClient compliance checks + EVMClient
+// on-chain attestation write. Demonstrates the full privacy chain:
+//   1. Confidential HTTP: API calls in secure enclave, secrets never in memory
+//   2. Off-chain decision: compliance logic runs entirely off-chain
+//   3. Minimal attestation: only tier/limits/expiry reach the blockchain
+//   4. Optional encryption: AES-GCM encrypted responses before leaving enclave
+//
+// Chainlink CRE capabilities used:
+//   - cron-trigger@1.0.0       (scheduled execution)
+//   - confidential-http@1.0.0  (enclave API calls with Vault DON secrets)
+//   - evm@1.0.0                (on-chain report write via DON-signed reports)
+// ---------------------------------------------------------------------------
+
 import {
   CronCapability,
   ConfidentialHTTPClient,

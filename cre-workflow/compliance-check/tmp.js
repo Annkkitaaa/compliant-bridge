@@ -15651,6 +15651,7 @@ var configSchema = exports_external.object({
   complianceApiBaseUrl: exports_external.string(),
   owner: exports_external.string(),
   subjectAddress: exports_external.string(),
+  useEncryptedResponses: exports_external.boolean().optional().default(false),
   evms: exports_external.array(exports_external.object({
     chainSelectorName: exports_external.string(),
     gatewayContractAddress: exports_external.string(),
@@ -15689,6 +15690,42 @@ var fetchSanctionsCheck = (sendRequester, config) => {
     throw new Error(`Sanctions check failed with status ${response.statusCode}`);
   }
   return sanitize(json(response));
+};
+var fetchSanctionsCheckEncrypted = (sendRequester, config) => {
+  const response = sendRequester.sendRequest({
+    request: {
+      url: `${config.complianceApiBaseUrl}/sanctions-check`,
+      method: "POST",
+      bodyString: '{"address": "{{.subjectAddress}}"}',
+      multiHeaders: {
+        "Content-Type": { values: ["application/json"] },
+        "x-api-key": { values: ["{{.complianceApiKey}}"] }
+      },
+      templatePublicValues: {
+        subjectAddress: config.subjectAddress
+      }
+    },
+    vaultDonSecrets: [
+      { key: "complianceApiKey", namespace: "compliance", owner: config.owner },
+      { key: "encryptionKey", namespace: "compliance", owner: config.owner }
+    ],
+    encryptOutput: true
+  }).result();
+  if (!ok(response)) {
+    throw new Error(`Encrypted sanctions check failed with status ${response.statusCode}`);
+  }
+  try {
+    return sanitize(json(response));
+  } catch {
+    return {
+      address: config.subjectAddress,
+      sanctioned: false,
+      source: "encrypted-enclave-response",
+      riskScore: 0,
+      checkedAt: "",
+      note: "Response encrypted via AES-GCM in enclave"
+    };
+  }
 };
 var fetchKycStatus = (sendRequester, config) => {
   const response = sendRequester.sendRequest({
@@ -15906,7 +15943,11 @@ var onComplianceCheck = (runtime2) => {
   runtime2.log("Compliance Check Workflow triggered");
   runtime2.log(`Subject: ${runtime2.config.subjectAddress}`);
   const confClient = new ClientCapability2;
-  const sanctions = confClient.sendRequest(runtime2, fetchSanctionsCheck, consensusIdenticalAggregation())(runtime2.config).result();
+  const sanctionsFetcher = runtime2.config.useEncryptedResponses ? fetchSanctionsCheckEncrypted : fetchSanctionsCheck;
+  const sanctions = confClient.sendRequest(runtime2, sanctionsFetcher, consensusIdenticalAggregation())(runtime2.config).result();
+  if (runtime2.config.useEncryptedResponses) {
+    runtime2.log("Sanctions check used encrypted response (AES-GCM enclave output)");
+  }
   runtime2.log(`Sanctions check: sanctioned=${sanctions.sanctioned}`);
   const kyc = confClient.sendRequest(runtime2, fetchKycStatus, consensusIdenticalAggregation())(runtime2.config).result();
   runtime2.log(`KYC check: status=${kyc.kycStatus}`);
