@@ -3,10 +3,13 @@
   "complianceApiBaseUrl": "http://localhost:3001/api/v1",
   "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
   "subjectAddress": "0xAA00000000000000000000000000000000000001",
+  "useEncryptedResponses": false,
   "evms": [
     {
       "chainSelectorName": "ethereum-testnet-sepolia",
-      "gatewayContractAddress": "0x0000000000000000000000000000000000000000"
+      "gatewayContractAddress": "0x0000000000000000000000000000000000000000",
+      "consumerContractAddress": "0x0000000000000000000000000000000000000000",
+      "gasLimit": "500000"
     }
   ]
 }
