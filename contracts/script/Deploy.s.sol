@@ -8,6 +8,7 @@ import {RegulatorView} from "../src/RegulatorView.sol";
 import {AttestationSender} from "../src/AttestationSender.sol";
 import {AttestationReceiver} from "../src/AttestationReceiver.sol";
 import {AttestationInvalidator} from "../src/AttestationInvalidator.sol";
+import {ComplianceConsumer} from "../src/ComplianceConsumer.sol";
 
 /// @title Deploy
 /// @notice Chain-aware deployment script for Compliant Bridge.
@@ -60,7 +61,7 @@ contract Deploy is Script {
         // Authorize deployer as workflow for admin operations
         gateway.setAuthorizedWorkflow(deployer, true);
 
-        // ── Source chain: AttestationSender ───────────────────────────
+        // ── Source chain: AttestationSender + ComplianceConsumer ────────
         if (isSource) {
             AttestationSender sender = new AttestationSender(
                 ccipRouter,
@@ -70,6 +71,15 @@ contract Deploy is Script {
 
             // Authorize deployer as sender for testing
             sender.setAuthorizedSender(deployer, true);
+
+            // ComplianceConsumer: CRE report receiver that writes attestations to gateway
+            // Forwarder is the CRE DON forwarder — set to deployer for now, update post-deploy
+            address forwarder = vm.envOr("CRE_FORWARDER", deployer);
+            ComplianceConsumer consumer = new ComplianceConsumer(address(gateway), forwarder);
+            console.log("ComplianceConsumer:", address(consumer));
+
+            // Authorize consumer as a workflow so it can call attestCompliance
+            gateway.setAuthorizedWorkflow(address(consumer), true);
         }
 
         // ── Destination chain: AttestationReceiver ───────────────────
@@ -107,6 +117,9 @@ contract Deploy is Script {
         console.log("ComplianceToken:       ", address(token));
         console.log("RegulatorView:         ", address(regulatorView));
         console.log("AttestationInvalidator:", address(invalidator));
+        if (isSource) {
+            console.log("(AttestationSender and ComplianceConsumer logged above)");
+        }
         console.log("");
         console.log(">>> Copy these addresses into your .env file <<<");
         console.log(">>> Then run: make configure-ccip <<<");

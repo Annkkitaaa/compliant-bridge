@@ -7,8 +7,8 @@
   "evms": [
     {
       "chainSelectorName": "ethereum-testnet-sepolia",
-      "gatewayContractAddress": "0x0000000000000000000000000000000000000000",
-      "consumerContractAddress": "0x0000000000000000000000000000000000000000",
+      "gatewayContractAddress": "0x472E9A6eC84ad6eA1EE7F816c7dE92530Eb67d33",
+      "consumerContractAddress": "0x4de32d6AF6bBb30C69107FccC69DE53f1744CD72",
       "gasLimit": "500000"
     }
   ]

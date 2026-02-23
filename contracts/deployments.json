@@ -1,0 +1,25 @@
+{
+  "sepolia": {
+    "chainId": 11155111,
+    "gateway": "0x472E9A6eC84ad6eA1EE7F816c7dE92530Eb67d33",
+    "token": "0x3B8DfFB39a66e7d861C7d02614F5491e4C1A475a",
+    "regulatorView": "0x588a5851A7184655bcF52849e9748B24eF90E37f",
+    "consumer": "0x4de32d6AF6bBb30C69107FccC69DE53f1744CD72",
+    "sender": "0xBABda3Fae21D9c08F5AAF742dc61b4C4CDDB26f5",
+    "invalidator": "0xfBF46805a3F3AFD485232b441E8E88E19c7dd06F",
+    "ccipRouter": "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59",
+    "linkToken": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
+    "explorer": "https://sepolia.etherscan.io"
+  },
+  "arbSepolia": {
+    "chainId": 421614,
+    "gateway": "0x64f0d037a4F4B46A9F11E01c2144b042bF638F76",
+    "token": "0x472E9A6eC84ad6eA1EE7F816c7dE92530Eb67d33",
+    "regulatorView": "0x3B8DfFB39a66e7d861C7d02614F5491e4C1A475a",
+    "receiver": "0xC05937c6f2140A32526Ef75353dbeca44f763AEC",
+    "invalidator": "0x50F87c2a17FcE0612b26F8B9CADAde106F5F69d6",
+    "ccipRouter": "0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165",
+    "linkToken": "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
+    "explorer": "https://sepolia.arbiscan.io"
+  }
+}
