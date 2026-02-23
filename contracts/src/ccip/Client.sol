@@ -28,12 +28,16 @@ library Client {
         uint256 amount; // amount of tokens
     }
 
+    /// @dev EVMExtraArgsV1 tag required by the CCIP router (0x97a657c9).
+    bytes4 private constant EVM_EXTRA_ARGS_V1_TAG = 0x97a657c9;
+
     /// @dev Encodes extra args with gas limit for destination execution.
+    ///      Format: bytes4(EVM_EXTRA_ARGS_V1_TAG) || abi.encode(gasLimit)
     /// @param gasLimit The gas limit for destination chain execution.
     /// @return Encoded extra args.
     function _argsToBytes(
         uint256 gasLimit
     ) internal pure returns (bytes memory) {
-        return abi.encode(gasLimit);
+        return abi.encodeWithSelector(EVM_EXTRA_ARGS_V1_TAG, gasLimit);
     }
 }

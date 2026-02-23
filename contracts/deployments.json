@@ -5,11 +5,16 @@
     "token": "0x3B8DfFB39a66e7d861C7d02614F5491e4C1A475a",
     "regulatorView": "0x588a5851A7184655bcF52849e9748B24eF90E37f",
     "consumer": "0x4de32d6AF6bBb30C69107FccC69DE53f1744CD72",
-    "sender": "0xBABda3Fae21D9c08F5AAF742dc61b4C4CDDB26f5",
-    "invalidator": "0xfBF46805a3F3AFD485232b441E8E88E19c7dd06F",
+    "sender": "0x21F4DaEaE24E6ca825315813680317F1A218f6d5",
+    "invalidator": "0x9982dB04ac6b3d158694ea7c0aCDa0872daEc1ea",
     "ccipRouter": "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59",
     "linkToken": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
-    "explorer": "https://sepolia.etherscan.io"
+    "explorer": "https://sepolia.etherscan.io",
+    "notes": {
+      "sender_v1_deprecated": "0xBABda3Fae21D9c08F5AAF742dc61b4C4CDDB26f5",
+      "invalidator_v1_deprecated": "0xfBF46805a3F3AFD485232b441E8E88E19c7dd06F",
+      "fix": "v1 had missing EVMExtraArgsV1Tag (0x97a657c9); v2 redeployed with fix"
+    }
   },
   "arbSepolia": {
     "chainId": 421614,
@@ -21,5 +26,24 @@
     "ccipRouter": "0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165",
     "linkToken": "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
     "explorer": "https://sepolia.arbiscan.io"
+  },
+  "ccipMessages": {
+    "bridgeAttestation_alice": {
+      "messageId": "0xa48328ae8c953a1e6a1aca42b779abb76e68d1d25f11d83b96e5337d97611aa0",
+      "subject": "0xAA00000000000000000000000000000000000001",
+      "from": "sepolia",
+      "to": "arbSepolia",
+      "type": "attestation_bridge",
+      "trackUrl": "https://ccip.chain.link/msg/0xa48328ae8c953a1e6a1aca42b779abb76e68d1d25f11d83b96e5337d97611aa0"
+    },
+    "invalidateBob": {
+      "messageId": "0x3989fdca1e00a6e028e1bcae7b77059cb198470e7058d80270451b95b483cbb7",
+      "subject": "0xAa00000000000000000000000000000000000002",
+      "from": "sepolia",
+      "to": "arbSepolia",
+      "type": "revocation",
+      "reason": "Sanctions update: address added to OFAC SDN list",
+      "trackUrl": "https://ccip.chain.link/msg/0x3989fdca1e00a6e028e1bcae7b77059cb198470e7058d80270451b95b483cbb7"
+    }
   }
 }

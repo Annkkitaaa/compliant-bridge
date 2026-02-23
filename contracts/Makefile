@@ -2,7 +2,10 @@
 
 .PHONY: build test deploy-sepolia deploy-arb-sepolia deploy-base-sepolia \
         configure-ccip-sepolia configure-ccip-dest configure-ccip \
-        test-crosschain deploy-all setup-testdata verify clean
+        test-crosschain deploy-all setup-testdata verify clean \
+        verify-sepolia verify-arb-sepolia bridge-attestation \
+        simulate-ccip invalidate-crosschain \
+        redeploy-ccip-contracts reconfigure-ccip-dest
 
 # ── Build & Test ──────────────────────────────────────────────────────
 
@@ -50,12 +53,31 @@ deploy-base-sepolia:
 # ── Configure CCIP ───────────────────────────────────────────────────
 
 configure-ccip-sepolia:
+	LINK_TOKEN=$(LINK_TOKEN_SEPOLIA) LINK_FUND_AMOUNT=3000000000000000000 \
 	forge script script/ConfigureCCIP.s.sol:ConfigureCCIP \
 		--rpc-url $(SEPOLIA_RPC_URL) \
 		--broadcast \
 		-vvvv
 
 configure-ccip-dest:
+	forge script script/ConfigureCCIP.s.sol:ConfigureCCIP \
+		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
+
+# ── Redeploy fixed CCIP contracts (extraArgs bug fix) ────────────────
+
+redeploy-ccip-contracts:
+	forge script script/RedeployCCIPContracts.s.sol \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		--broadcast \
+		--verify \
+		-vvvv
+	@echo ""
+	@echo ">>> Update .env with new SENDER_ADDRESS and SRC_INVALIDATOR_ADDRESS <<<"
+	@echo ">>> Then run: make reconfigure-ccip-dest <<<"
+
+reconfigure-ccip-dest:
 	forge script script/ConfigureCCIP.s.sol:ConfigureCCIP \
 		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
 		--broadcast \
@@ -87,6 +109,37 @@ deploy-all: deploy-sepolia
 	@echo ">>> Sepolia deployed. Now update .env with addresses and run: <<<"
 	@echo ">>>   make deploy-arb-sepolia <<<"
 	@echo ">>>   make configure-ccip     <<<"
+
+# ── Cross-Chain Flow ─────────────────────────────────────────────────
+
+verify-sepolia:
+	forge script script/VerifyCrossChain.s.sol \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		-vvv
+
+verify-arb-sepolia:
+	TOKEN_ADDRESS=0x472E9A6eC84ad6eA1EE7F816c7dE92530Eb67d33 \
+	forge script script/VerifyCrossChain.s.sol \
+		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
+		-vvv
+
+bridge-attestation:
+	forge script script/BridgeAttestation.s.sol \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
+
+simulate-ccip:
+	forge script script/SimulateCCIP.s.sol \
+		--rpc-url $(ARB_SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
+
+invalidate-crosschain:
+	forge script script/InvalidateAcrossChains.s.sol \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		--broadcast \
+		-vvvv
 
 # ── Setup Test Data (legacy, source chain only) ─────────────────────
 
