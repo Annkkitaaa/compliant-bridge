@@ -1,3 +1,7 @@
+// Chainlink Integration: CCIP
+// Purpose: Calls AttestationInvalidator.invalidateAcrossChains() to broadcast attestation
+//          revocations across all chains simultaneously via Chainlink CCIP. A single regulator
+//          transaction propagates the revocation to Sepolia and Arb Sepolia in one call.
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { ethers } from "ethers";

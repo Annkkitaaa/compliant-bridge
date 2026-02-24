@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CRE EVMClient (report receiver)
+// Purpose: On-chain target for Chainlink CRE EVMClient.writeReport() calls.
+//          The Chainlink Forwarder calls onReport(bytes, bytes) after verifying the DON signature.
+//          Decodes the attestation payload and forwards it to ComplianceGateway.
 pragma solidity ^0.8.24;
 
 import {IComplianceGateway} from "./IComplianceGateway.sol";

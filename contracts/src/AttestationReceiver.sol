@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CCIP (CCIPReceiver)
+// Purpose: Receives cross-chain compliance attestations and revocations via Chainlink CCIP.
+//          Extends CCIPReceiver — the CCIP router calls _ccipReceive() after verifying the message.
+//          Uses an allowlist of approved source chains and senders for security.
 pragma solidity ^0.8.24;
 
 import {CCIPReceiver} from "./ccip/CCIPReceiver.sol";

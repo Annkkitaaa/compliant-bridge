@@ -1,4 +1,9 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CRE EVMClient (attestation destination) | CCIP (cross-chain receiver target)
+// Purpose: Central attestation store that accepts compliance data from two Chainlink sources:
+//          (1) CRE DON-signed reports via ComplianceConsumer.onReport() → attestCompliance()
+//          (2) CCIP cross-chain messages via AttestationReceiver._ccipReceive() → receiveRemoteAttestation()
+//          Only Chainlink-authorized sources (workflow/receiver addresses) can write attestations.
 pragma solidity ^0.8.24;
 
 import {IComplianceGateway} from "./IComplianceGateway.sol";

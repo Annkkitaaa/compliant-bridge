@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CCIP (CCIPReceiver base contract)
+// Purpose: Local copy of the official Chainlink CCIPReceiver base. AttestationReceiver extends
+//          this to receive cross-chain messages. The router address is set in the constructor
+//          and validated on every incoming message via the ccipReceive() entry point.
 pragma solidity ^0.8.24;
 
 import {Client} from "./Client.sol";

@@ -1,3 +1,8 @@
+// Chainlink Integration: CCIP | CRE EVMClient | CRE ConfidentialHTTP
+// Purpose: ABIs, addresses, and helpers for all Chainlink-integrated contracts.
+//          CCIP chain selector for Arb Sepolia routing (arbSepoliaSelector).
+//          getReadProvider() for on-chain data; getBrowserSigner() for MetaMask write txs.
+//
 // Contract addresses from deployments.json
 export const ADDRESSES = {
   sepolia: {

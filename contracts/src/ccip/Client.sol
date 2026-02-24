@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CCIP (Client library)
+// Purpose: Local copy of the official Chainlink CCIP Client.sol. Defines EVM2AnyMessage,
+//          Any2EVMMessage, EVMTokenAmount, and _argsToBytes() with the required
+//          EVMExtraArgsV1Tag (0x97a657c9) prefix — omitting this causes InvalidExtraArgsTag().
 pragma solidity ^0.8.24;
 
 /// @notice Chainlink CCIP Client library — message types for cross-chain communication.

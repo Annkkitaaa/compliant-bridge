@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CCIP
+// Purpose: Broadcasts compliance revocations to all destination chains simultaneously via CCIP.
+//          A single call to invalidateAcrossChains() revokes locally then sends CCIP messages
+//          to every specified chain. Fees paid in LINK from the contract's own balance.
 pragma solidity ^0.8.24;
 
 import {IRouterClient} from "./ccip/IRouterClient.sol";

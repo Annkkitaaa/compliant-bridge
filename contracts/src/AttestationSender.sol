@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CCIP
+// Purpose: Sends compliance attestation messages cross-chain via the Chainlink CCIP router.
+//          Supports attestation-only messages, token+attestation bundles, and revocations.
+//          Fees paid in LINK from the contract's own balance (nonpayable for callers).
 pragma solidity ^0.8.24;
 
 import {IRouterClient} from "./ccip/IRouterClient.sol";

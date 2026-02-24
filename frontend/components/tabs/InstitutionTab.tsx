@@ -1,3 +1,7 @@
+// Chainlink Integration: CCIP
+// Purpose: Calls AttestationSender.sendAttestation() to bridge a compliance attestation
+//          from Sepolia to Arb Sepolia via Chainlink CCIP. Uses the CCIP Arb Sepolia
+//          chain selector from contracts.ts. No ETH required — contract pays LINK fees.
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";

@@ -1,3 +1,7 @@
+// Chainlink Integration: CCIP | CRE EVMClient
+// Purpose: Reads compliance status from ComplianceGateway — data written by CRE DON reports
+//          and bridged cross-chain via CCIP. Queries Transfer events and batches
+//          getPublicStatus() calls to show live compliance state on both chains.
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";

@@ -1,4 +1,7 @@
 // SPDX-License-Identifier: MIT
+// Chainlink Integration: CCIP (IRouterClient interface)
+// Purpose: Local copy of the official Chainlink CCIP IRouterClient interface.
+//          Used by AttestationSender and AttestationInvalidator to call getFee() and ccipSend().
 pragma solidity ^0.8.24;
 
 import {Client} from "./Client.sol";

@@ -1,3 +1,9 @@
+// Chainlink Integration: CRE Workflow | CRE ConfidentialHTTP | CRE Secrets (Vault DON) | CRE EVMClient | CRE CronCapability
+// Purpose: Full off-chain compliance check pipeline — API credentials stored in Vault DON,
+//          four compliance checks executed inside a ConfidentialHTTP enclave (API key never
+//          in node memory), off-chain decision produces minimal attestation (tier/limit/expiry),
+//          DON-signed report delivered on-chain via EVMClient.writeReport().
+//
 // ---------------------------------------------------------------------------
 // Compliant Bridge — Chainlink CRE Compliance Workflow
 //
