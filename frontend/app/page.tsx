@@ -1,47 +1,43 @@
 "use client";
-import { useState } from "react";
-import { Shield, Eye, Building2, Link2, ExternalLink } from "lucide-react";
+import { Shield, Eye, Building2, Link2, ExternalLink, Columns2 } from "lucide-react";
 import PrivacyDiagram from "@/components/PrivacyDiagram";
-import PublicTab from "@/components/tabs/PublicTab";
+import PublicTab      from "@/components/tabs/PublicTab";
 import InstitutionTab from "@/components/tabs/InstitutionTab";
-import RegulatorTab from "@/components/tabs/RegulatorTab";
+import RegulatorTab   from "@/components/tabs/RegulatorTab";
+import SplitView      from "@/components/demo/SplitView";
+import FlowBar        from "@/components/demo/FlowBar";
+import DemoPanel, { DemoToggle } from "@/components/demo/DemoPanel";
+import { DemoProvider, useDemoContext, type TabId } from "@/context/DemoContext";
 
-type TabId = "public" | "institution" | "regulator";
+// ── Tab config ────────────────────────────────────────────────────────────────
 
-const TABS: { id: TabId; label: string; sub: string; icon: typeof Eye; color: string }[] = [
-  {
-    id: "public",
-    label: "Public View",
-    sub: "Anyone · Minimal data",
-    icon: Eye,
-    color: "text-slate-300",
-  },
-  {
-    id: "institution",
-    label: "Institution View",
-    sub: "Wallet holder · Own data",
-    icon: Building2,
-    color: "text-blue-300",
-  },
-  {
-    id: "regulator",
-    label: "Regulator View",
-    sub: "Authorized · Full data",
-    icon: Shield,
-    color: "text-amber-300",
-  },
+const BASE_TABS: {
+  id: TabId; label: string; sub: string; icon: typeof Eye; color: string;
+}[] = [
+  { id: "public",      label: "Public View",      sub: "Anyone · Minimal data",       icon: Eye,       color: "text-slate-300"  },
+  { id: "institution", label: "Institution View",  sub: "Wallet holder · Own data",    icon: Building2, color: "text-blue-300"   },
+  { id: "regulator",   label: "Regulator View",    sub: "Authorized · Full data",      icon: Shield,    color: "text-amber-300"  },
 ];
 
+const SPLIT_TAB = {
+  id:    "split" as TabId,
+  label: "Split View",
+  sub:   "Demo · All perspectives",
+  icon:  Columns2,
+  color: "text-violet-300",
+};
+
 const CHAIN_PILL = (
-  <div className="flex items-center gap-2">
-    <div className="flex items-center gap-1.5 bg-white/10 border border-white/15 backdrop-blur-sm rounded-full px-3 py-1.5">
-      <span className="w-2 h-2 rounded-full bg-emerald-400 pulse inline-block" />
-      <span className="text-xs font-medium text-white/80">Sepolia</span>
-    </div>
-    <div className="flex items-center gap-1.5 bg-white/10 border border-white/15 backdrop-blur-sm rounded-full px-3 py-1.5">
-      <span className="w-2 h-2 rounded-full bg-violet-400 pulse inline-block" />
-      <span className="text-xs font-medium text-white/80">Arb Sepolia</span>
-    </div>
+  <div className="flex items-center gap-2 flex-wrap">
+    {[
+      { dot: "bg-emerald-400", label: "Sepolia" },
+      { dot: "bg-violet-400",  label: "Arb Sepolia" },
+    ].map(c => (
+      <div key={c.label} className="flex items-center gap-1.5 bg-white/10 border border-white/15 backdrop-blur-sm rounded-full px-3 py-1.5">
+        <span className={`w-2 h-2 rounded-full ${c.dot} pulse inline-block`} />
+        <span className="text-xs font-medium text-white/80">{c.label}</span>
+      </div>
+    ))}
     <div className="flex items-center gap-1.5 bg-white/10 border border-white/15 backdrop-blur-sm rounded-full px-3 py-1.5">
       <Link2 className="w-3 h-3 text-white/60" />
       <span className="text-xs font-medium text-white/70">CCIP Live</span>
@@ -49,15 +45,21 @@ const CHAIN_PILL = (
   </div>
 );
 
-export default function Home() {
-  const [activeTab, setActiveTab] = useState<TabId>("public");
+// ── Inner page (reads demo context) ──────────────────────────────────────────
+
+function HomeContent() {
+  const { demoMode, activeTab, setActiveTab } = useDemoContext();
+
+  const tabs = demoMode ? [...BASE_TABS, SPLIT_TAB] : BASE_TABS;
 
   return (
-    <div className="min-h-screen" style={{ background: "#f0f4f8" }}>
+    <div className={`min-h-screen ${demoMode ? "pb-20" : ""}`} style={{ background: "#f0f4f8" }}>
+
       {/* ── Header ──────────────────────────────────────────────── */}
       <header className="gradient-header">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="pt-8 pb-6">
+
             {/* Top bar */}
             <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
               <div>
@@ -65,7 +67,9 @@ export default function Home() {
                   <div className="w-8 h-8 rounded-lg bg-blue-500/30 border border-blue-400/30 flex items-center justify-center">
                     <Shield className="w-4 h-4 text-blue-300" />
                   </div>
-                  <span className="text-blue-300 text-xs font-bold tracking-widest uppercase">Chainlink · CCIP · CRE</span>
+                  <span className="text-blue-300 text-xs font-bold tracking-widest uppercase">
+                    Chainlink · CCIP · CRE
+                  </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
                   CrossChain Compliance Gateway
@@ -74,8 +78,13 @@ export default function Home() {
                   Privacy-Preserving Compliance for Tokenized Assets · Check once, verify everywhere
                 </p>
               </div>
+
+              {/* Right cluster */}
               <div className="flex flex-col items-end gap-2">
-                {CHAIN_PILL}
+                <div className="flex items-center gap-3">
+                  {CHAIN_PILL}
+                  <DemoToggle />
+                </div>
                 <a
                   href="https://ccip.chain.link"
                   target="_blank"
@@ -91,10 +100,13 @@ export default function Home() {
             {/* Privacy diagram */}
             <PrivacyDiagram />
 
+            {/* Flow bar — demo only */}
+            <FlowBar />
+
             {/* Tab bar */}
             <div className="flex gap-2 mt-5 pb-0">
-              {TABS.map(tab => {
-                const Icon = tab.icon;
+              {tabs.map(tab => {
+                const Icon     = tab.icon;
                 const isActive = activeTab === tab.id;
                 return (
                   <button
@@ -108,8 +120,12 @@ export default function Home() {
                   >
                     <Icon className={`w-4 h-4 ${isActive ? "text-slate-600" : tab.color}`} />
                     <div className="text-left hidden sm:block">
-                      <p className={`leading-tight ${isActive ? "text-slate-800" : "text-white/80"}`}>{tab.label}</p>
-                      <p className={`text-xs font-normal leading-tight ${isActive ? "text-slate-400" : "text-white/40"}`}>{tab.sub}</p>
+                      <p className={`leading-tight ${isActive ? "text-slate-800" : "text-white/80"}`}>
+                        {tab.label}
+                      </p>
+                      <p className={`text-xs font-normal leading-tight ${isActive ? "text-slate-400" : "text-white/40"}`}>
+                        {tab.sub}
+                      </p>
                     </div>
                     <span className="sm:hidden">{tab.label}</span>
                   </button>
@@ -125,6 +141,7 @@ export default function Home() {
         {activeTab === "public"      && <PublicTab />}
         {activeTab === "institution" && <InstitutionTab />}
         {activeTab === "regulator"   && <RegulatorTab />}
+        {activeTab === "split"       && <SplitView />}
       </main>
 
       {/* ── Footer ──────────────────────────────────────────────── */}
@@ -133,11 +150,11 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 text-xs text-slate-400">
             <span className="flex items-center gap-1.5">
               <Shield className="w-3 h-3" /> ComplianceGateway · Sepolia:
-              <span className="mono text-slate-500">0x472E...d33</span>
+              <span className="mono text-slate-500">0x472E…d33</span>
             </span>
             <span className="flex items-center gap-1.5">
               <Shield className="w-3 h-3" /> ComplianceGateway · Arb Sepolia:
-              <span className="mono text-slate-500">0x64f0...F76</span>
+              <span className="mono text-slate-500">0x64f0…F76</span>
             </span>
           </div>
           <p className="text-xs text-slate-400">
@@ -145,6 +162,19 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* ── Demo panel ─────────────────────────────────────────── */}
+      <DemoPanel />
     </div>
+  );
+}
+
+// ── Root (provides context) ────────────────────────────────────────────────────
+
+export default function Home() {
+  return (
+    <DemoProvider>
+      <HomeContent />
+    </DemoProvider>
   );
 }

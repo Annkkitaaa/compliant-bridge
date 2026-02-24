@@ -8,6 +8,7 @@ import {
   type OnchainAttestation,
 } from "@/lib/contracts";
 import { ToastContainer, ToastData, toastId } from "@/components/Toast";
+import DemoAnnotation from "@/components/demo/DemoAnnotation";
 import {
   Wallet, CheckCircle, Clock, Globe, ArrowRight,
   Send, RefreshCw, Link2, Shield, ChevronRight, AlertTriangle,
@@ -254,6 +255,7 @@ export default function InstitutionTab() {
   return (
     <div className="fade-in space-y-5">
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+      <DemoAnnotation forTab="institution" />
 
       {/* Connected wallet header */}
       <div className="card p-4 flex items-center justify-between">

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ethers } from "ethers";
 import {
   ADDRESSES, GATEWAY_ABI, REGULATOR_ABI, INVALIDATOR_ABI,
@@ -9,6 +9,8 @@ import {
 } from "@/lib/contracts";
 import { MOCK_REGULATOR_DATA } from "@/lib/mockData";
 import { ToastContainer, ToastData, toastId } from "@/components/Toast";
+import DemoAnnotation from "@/components/demo/DemoAnnotation";
+import { useDemoContext } from "@/context/DemoContext";
 import {
   Search, Shield, AlertTriangle, CheckCircle, XCircle, Clock,
   Globe, Activity, ChevronDown, ChevronUp, Zap, Eye, History,
@@ -100,7 +102,10 @@ const SUBJECT_OPTIONS = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+const BOB_ADDRESS = "0xAa00000000000000000000000000000000000002";
+
 export default function RegulatorTab() {
+  const { demoMode, currentStep } = useDemoContext();
   const [query,   setQuery]   = useState("");
   const [subject, setSubject] = useState<SubjectData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -112,6 +117,15 @@ export default function RegulatorTab() {
 
   const [activeSection, setActiveSection] = useState<"checks" | "history" | "transfers">("checks");
   const [toasts, setToasts] = useState<ToastData[]>([]);
+
+  // Auto-populate Bob when demo step 4 activates
+  useEffect(() => {
+    if (demoMode && currentStep === 4 && !subject) {
+      setQuery(BOB_ADDRESS);
+      lookup(BOB_ADDRESS);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [demoMode, currentStep]);
 
   function addToast(t: Omit<ToastData, "id">) {
     setToasts(prev => [...prev, { ...t, id: toastId() }]);
@@ -317,6 +331,7 @@ export default function RegulatorTab() {
   return (
     <div className="fade-in space-y-5">
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+      <DemoAnnotation forTab="regulator" />
 
       {/* Regulator header */}
       <div className="rounded-xl bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 flex items-center justify-between">
