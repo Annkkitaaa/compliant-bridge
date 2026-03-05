@@ -15,7 +15,7 @@ import { ToastContainer, ToastData, toastId } from "@/components/Toast";
 import DemoAnnotation from "@/components/demo/DemoAnnotation";
 import {
   Wallet, CheckCircle, Clock, Globe, ArrowRight,
-  Send, RefreshCw, Link2, Shield, ChevronRight, AlertTriangle,
+  Send, RefreshCw, Link2, Shield, ChevronRight, AlertTriangle, ShieldCheck,
 } from "lucide-react";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -66,6 +66,7 @@ export default function InstitutionTab() {
   const [bridging, setBridging] = useState(false);
   const [bridged,  setBridged]  = useState(false);
   const [bridgeTx, setBridgeTx] = useState<string>("");
+  const [attesting, setAttesting] = useState(false);
 
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
@@ -207,6 +208,26 @@ export default function InstitutionTab() {
     addToast({ type: "success", title: "Refreshed from chain" });
   }
 
+  async function handleRequestAttestation() {
+    if (!address || attesting) return;
+    setAttesting(true);
+    try {
+      const res = await fetch("/api/attest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Attestation failed");
+      addToast({ type: "success", title: "Compliance attested!", message: "Tier 1 attestation issued on-chain. Loading your data…" });
+      await loadData(address);
+    } catch (err: unknown) {
+      addToast({ type: "error", title: "Attestation failed", message: (err as Error).message?.slice(0, 120) });
+    } finally {
+      setAttesting(false);
+    }
+  }
+
   // ── Dark surface helpers ─────────────────────────────────────────────────
 
   const surface = { background: "#13151A", border: "1px solid #1F2235" };
@@ -298,16 +319,33 @@ export default function InstitutionTab() {
         </div>
       )}
 
-      {/* Error */}
+      {/* Error / No attestation */}
       {!attLoading && attError && (
-        <div className="rounded-2xl p-5 flex items-start gap-3"
+        <div className="rounded-2xl p-5"
           style={{ background: "rgba(245,172,55,0.08)", border: "1px solid rgba(245,172,55,0.25)" }}
         >
-          <AlertTriangle className="w-5 h-5 text-[#F5AC37] flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-semibold text-[#F5AC37]">No attestation found</p>
-            <p className="text-xs text-[#8892A4] mt-1">{attError}</p>
+          <div className="flex items-start gap-3 mb-4">
+            <AlertTriangle className="w-5 h-5 text-[#F5AC37] flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-semibold text-[#F5AC37]">No attestation found</p>
+              <p className="text-xs text-[#8892A4] mt-1">
+                Your wallet has no on-chain compliance attestation yet. Request one below — the system will verify and issue it to your address.
+              </p>
+            </div>
           </div>
+          <button
+            onClick={handleRequestAttestation}
+            disabled={attesting}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-60"
+            style={{ background: "#375BD2", color: "white", boxShadow: "0 0 16px rgba(55,91,210,0.25)" }}
+          >
+            {attesting
+              ? <><RefreshCw className="w-4 h-4 animate-spin" /> Issuing attestation…</>
+              : <><ShieldCheck className="w-4 h-4" /> Request Compliance Check</>}
+          </button>
+          <p className="text-xs text-[#4A5568] text-center mt-2">
+            Attests your wallet at Tier 1 (Basic) on Sepolia — valid for 1 year.
+          </p>
         </div>
       )}
 

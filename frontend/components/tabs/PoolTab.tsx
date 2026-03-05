@@ -18,7 +18,7 @@ import { ToastContainer, ToastData, toastId } from "@/components/Toast";
 import DemoAnnotation from "@/components/demo/DemoAnnotation";
 import {
   Wallet, Waves, ArrowRightLeft, Plus, Minus,
-  Lock, ChevronDown, RefreshCw, Droplets, Activity,
+  Lock, ChevronDown, RefreshCw, Droplets, Activity, ShieldCheck,
 } from "lucide-react";
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -67,14 +67,15 @@ export default function PoolTab() {
 
   const [toasts, setToasts]           = useState<ToastData[]>([]);
   const addToast = useCallback((t: ToastData) => setToasts(p => [...p, t]), []);
+  const [attesting, setAttesting]     = useState(false);
 
   const addrs = POOL_ADDRESSES.sepolia;
   const poolAddr = selectedTier ? addrs[POOLS[selectedTier - 1].poolKey] : ZERO_ADDR;
   const contracted = isDeployed(addrs.tier1Pool);
 
   // Hooks
-  const { info, refetch: refetchInfo }  = usePoolInfo(poolAddr);
-  const compliance                      = useUserCompliance(wallet, addrs.gateway);
+  const { info, refetch: refetchInfo }       = usePoolInfo(poolAddr);
+  const { compliance, refetch: refetchCompliance } = useUserCompliance(wallet, addrs.gateway);
   const { balances, refetch: refetchBal } = useTokenBalances(wallet, poolAddr, addrs.iusd, addrs.tTreas);
 
   const { swap, status: swapStatus, error: swapErr, reset: resetSwap }    = useSwap(poolAddr, addrs.iusd, addrs.tTreas);
@@ -91,6 +92,27 @@ export default function PoolTab() {
       setWallet(await signer.getAddress());
     } catch (e: unknown) {
       addToast({ id: toastId(), type: "error", title: "Connect failed", message: e instanceof Error ? e.message : "Connect failed" });
+    }
+  }
+
+  // Request compliance attestation via server-side relayer
+  async function handleRequestAttestation() {
+    if (!wallet || attesting) return;
+    setAttesting(true);
+    try {
+      const res = await fetch("/api/attest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: wallet }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Attestation failed");
+      addToast({ id: toastId(), type: "success", title: "Compliance attested!", message: "You are now Tier 1 — Basic. Refresh to access the pool." });
+      refetchCompliance();
+    } catch (e: unknown) {
+      addToast({ id: toastId(), type: "error", title: "Attestation failed", message: e instanceof Error ? e.message : "Unknown error" });
+    } finally {
+      setAttesting(false);
     }
   }
 
@@ -151,8 +173,8 @@ export default function PoolTab() {
             <p className="text-[#8892A4] text-sm">Checking compliance for <span className="text-white font-mono">{shortAddr(wallet)}</span>…</p>
           ) : compliance.tier === 0 ? (
             <div>
-              <p className="text-[#EA3943] font-semibold text-sm">No compliance attestation found</p>
-              <p className="text-[#4A5568] text-xs mt-0.5">This wallet has no on-chain attestation from the Chainlink CRE workflow.</p>
+              <p className="text-[#F5AC37] font-semibold text-sm">No compliance attestation found</p>
+              <p className="text-[#4A5568] text-xs mt-0.5">Request a compliance check to get attested on-chain and unlock pool access.</p>
             </div>
           ) : (
             <div className="flex items-center gap-3 flex-wrap">
@@ -169,6 +191,14 @@ export default function PoolTab() {
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all"
             style={{ background: "#375BD2", color: "white", boxShadow: "0 0 16px rgba(55,91,210,0.3)" }}>
             <Wallet className="w-4 h-4" /> Connect Wallet
+          </button>
+        ) : compliance?.tier === 0 ? (
+          <button onClick={handleRequestAttestation} disabled={attesting}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-60"
+            style={{ background: "#375BD2", color: "white", boxShadow: "0 0 16px rgba(55,91,210,0.3)" }}>
+            {attesting
+              ? <><RefreshCw className="w-4 h-4 animate-spin" /> Attesting…</>
+              : <><ShieldCheck className="w-4 h-4" /> Request Compliance Check</>}
           </button>
         ) : (
           <div className="flex items-center gap-2">

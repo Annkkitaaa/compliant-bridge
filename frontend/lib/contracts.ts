@@ -28,8 +28,8 @@ export const ADDRESSES = {
   },
 } as const;
 
-export const SEPOLIA_RPC    = "https://rpc.sepolia.org";
-export const ARB_SEPOLIA_RPC = "https://sepolia-rollup.arbitrum.io/rpc";
+export const SEPOLIA_RPC    = "https://ethereum-sepolia-rpc.publicnode.com";
+export const ARB_SEPOLIA_RPC = "https://arbitrum-sepolia-rpc.publicnode.com";
 
 // ── Minimal human-readable ABIs ───────────────────────────────────────────────
 
@@ -191,12 +191,12 @@ export async function getChainId(): Promise<number> {
  */
 export const POOL_ADDRESSES = {
   sepolia: {
-    gateway:   "0x0000000000000000000000000000000000000000",
-    iusd:      "0x0000000000000000000000000000000000000000",
-    tTreas:    "0x0000000000000000000000000000000000000000",
-    tier1Pool: "0x0000000000000000000000000000000000000000",
-    tier2Pool: "0x0000000000000000000000000000000000000000",
-    tier3Pool: "0x0000000000000000000000000000000000000000",
+    gateway:   "0xCEE67A28A6e552BEe87ac975Aad08122345FC510",
+    iusd:      "0x883Fe2CDf7fF5ef60a5fbae827C49B8814147E84",
+    tTreas:    "0x53F89a4B9827ea21af9D08139CA8C9E0bA6F98a1",
+    tier1Pool: "0x8D56d02Cbc58501A63DEBd700CcbBCdF97BdaE4D",
+    tier2Pool: "0xfF9d3665dabe84Ea67285802a4A234abea8B9806",
+    tier3Pool: "0xeCF174e463919cA04C199fBb0543675C83738128",
   },
 } as const;
 

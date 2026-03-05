@@ -104,6 +104,8 @@ export function usePoolInfo(poolAddress: string) {
 
 export function useUserCompliance(userAddress: string | null, gatewayAddress: string) {
   const [compliance, setCompliance] = useState<UserCompliance | null>(null);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const refetch = useCallback(() => setRefreshCount(c => c + 1), []);
 
   useEffect(() => {
     if (!userAddress || !isDeployed(gatewayAddress)) { setCompliance(null); return; }
@@ -127,9 +129,9 @@ export function useUserCompliance(userAddress: string | null, gatewayAddress: st
       } catch { if (!cancelled) setCompliance(null); }
     })();
     return () => { cancelled = true; };
-  }, [userAddress, gatewayAddress]);
+  }, [userAddress, gatewayAddress, refreshCount]);
 
-  return compliance;
+  return { compliance, refetch };
 }
 
 // ── useSwapQuote ───────────────────────────────────────────────────────────────
