@@ -1,7 +1,7 @@
 // Pure data — no React imports, no circular deps
 // TabId must match the union in context/DemoContext.tsx
 
-export type DemoTabId = "public" | "institution" | "regulator" | "split";
+export type DemoTabId = "public" | "institution" | "regulator" | "split" | "pool";
 
 export interface DemoStep {
   index:        number;

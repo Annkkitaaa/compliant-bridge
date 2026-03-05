@@ -183,3 +183,69 @@ export async function getChainId(): Promise<number> {
   const id: string = await eth.request({ method: "eth_chainId" });
   return parseInt(id, 16);
 }
+
+// ── Compliance Liquidity Pool — additive additions ──────────────────────────
+
+/** Pool contract addresses (separate from ADDRESSES — old tabs unaffected).
+ *  Fill these in after running: forge script script/DeployPool.s.sol --broadcast
+ */
+export const POOL_ADDRESSES = {
+  sepolia: {
+    gateway:   "0x0000000000000000000000000000000000000000",
+    iusd:      "0x0000000000000000000000000000000000000000",
+    tTreas:    "0x0000000000000000000000000000000000000000",
+    tier1Pool: "0x0000000000000000000000000000000000000000",
+    tier2Pool: "0x0000000000000000000000000000000000000000",
+    tier3Pool: "0x0000000000000000000000000000000000000000",
+  },
+} as const;
+
+export type PoolTierKey = "tier1Pool" | "tier2Pool" | "tier3Pool";
+
+export const TIER_CONFIG: Record<number, { name: string; color: string; bgColor: string; borderColor: string; maxTransfer: string; poolKey: PoolTierKey }> = {
+  1: { name: "Basic",         color: "#16C784", bgColor: "rgba(22,199,132,0.1)",  borderColor: "rgba(22,199,132,0.3)",  maxTransfer: "$10K",  poolKey: "tier1Pool" },
+  2: { name: "Accredited",    color: "#375BD2", bgColor: "rgba(55,91,210,0.1)",   borderColor: "rgba(55,91,210,0.3)",   maxTransfer: "$100K", poolKey: "tier2Pool" },
+  3: { name: "Institutional", color: "#F5AC37", bgColor: "rgba(245,172,55,0.1)",  borderColor: "rgba(245,172,55,0.3)",  maxTransfer: "Unlimited", poolKey: "tier3Pool" },
+};
+
+export const COMPLIANCE_POOL_ABI = [
+  "function addLiquidity(uint256 amountADesired, uint256 amountBDesired, uint256 amountAMin, uint256 amountBMin) returns (uint256 lpShares)",
+  "function removeLiquidity(uint256 lpAmount) returns (uint256 amountA, uint256 amountB)",
+  "function swap(address tokenIn, uint256 amountIn, uint256 amountOutMin) returns (uint256 amountOut)",
+  "function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) view returns (uint256)",
+  "function getReserves() view returns (uint256 reserveA, uint256 reserveB)",
+  "function getLPBalance(address user) view returns (uint256)",
+  "function canInteract(address user) view returns (bool)",
+  "function getPoolInfo() view returns (address gateway_, address tokenA_, address tokenB_, uint8 requiredTier_, uint256 reserveA_, uint256 reserveB_, uint256 totalSupply_)",
+  "function tokenA() view returns (address)",
+  "function tokenB() view returns (address)",
+  "function requiredTier() view returns (uint8)",
+  "function poolName() view returns (string)",
+  "function totalSupply() view returns (uint256)",
+  "function balanceOf(address) view returns (uint256)",
+  "function approve(address spender, uint256 amount) returns (bool)",
+  "function allowance(address owner, address spender) view returns (uint256)",
+  "event LiquidityAdded(address indexed provider, uint256 amountA, uint256 amountB, uint256 lpShares)",
+  "event LiquidityRemoved(address indexed provider, uint256 amountA, uint256 amountB, uint256 lpShares)",
+  "event Swapped(address indexed trader, address indexed tokenIn, uint256 amountIn, uint256 amountOut)",
+  "event ComplianceBlocked(address indexed user, uint8 userTier, uint8 requiredTier, string action)",
+];
+
+export const MOCK_ERC20_ABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function approve(address spender, uint256 amount) returns (bool)",
+  "function allowance(address owner, address spender) view returns (uint256)",
+  "function faucet()",
+  "function mint(address to, uint256 amount)",
+  "event Transfer(address indexed from, address indexed to, uint256 value)",
+];
+
+// Extend GATEWAY_ABI for pool-tier queries (used by useCompliancePool hooks)
+export const GATEWAY_TIER_ABI = [
+  ...GATEWAY_ABI,
+  "function isCompliantWithTier(address subject, uint8 requiredTier) view returns (bool)",
+  "function getComplianceTier(address subject) view returns (uint8)",
+];

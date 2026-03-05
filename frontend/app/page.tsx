@@ -1,5 +1,5 @@
 "use client";
-import { Shield, Eye, Building2, Columns2 } from "lucide-react";
+import { Shield, Eye, Building2, Columns2, Waves } from "lucide-react";
 import Navbar        from "@/components/Navbar";
 import Hero          from "@/components/Hero";
 import HowItWorks    from "@/components/HowItWorks";
@@ -7,6 +7,7 @@ import Footer        from "@/components/Footer";
 import PublicTab      from "@/components/tabs/PublicTab";
 import InstitutionTab from "@/components/tabs/InstitutionTab";
 import RegulatorTab   from "@/components/tabs/RegulatorTab";
+import PoolTab        from "@/components/tabs/PoolTab";
 import SplitView      from "@/components/demo/SplitView";
 import FlowBar        from "@/components/demo/FlowBar";
 import DemoPanel      from "@/components/demo/DemoPanel";
@@ -17,9 +18,10 @@ import { DemoProvider, useDemoContext, type TabId } from "@/context/DemoContext"
 const BASE_TABS: {
   id: TabId; label: string; sub: string; icon: typeof Eye; accentColor: string;
 }[] = [
-  { id: "public",      label: "Public",      sub: "Anyone · Pass/Fail only",  icon: Eye,       accentColor: "#8892A4" },
-  { id: "institution", label: "Institution", sub: "Wallet holder · Own data", icon: Building2, accentColor: "#375BD2" },
-  { id: "regulator",   label: "Regulator",   sub: "Authorized · Full data",   icon: Shield,    accentColor: "#F5AC37" },
+  { id: "public",      label: "Public",          sub: "Anyone · Pass/Fail only",  icon: Eye,       accentColor: "#8892A4" },
+  { id: "institution", label: "Institution",     sub: "Wallet holder · Own data", icon: Building2, accentColor: "#375BD2" },
+  { id: "regulator",   label: "Regulator",       sub: "Authorized · Full data",   icon: Shield,    accentColor: "#F5AC37" },
+  { id: "pool",        label: "Compliant Pool",  sub: "CLP · Gated AMM",          icon: Waves,     accentColor: "#16C784" },
 ];
 
 const SPLIT_TAB = {
@@ -113,6 +115,7 @@ function HomeContent() {
             {activeTab === "institution" && <InstitutionTab />}
             {activeTab === "regulator"   && <RegulatorTab />}
             {activeTab === "split"       && <SplitView />}
+            {activeTab === "pool"        && <PoolTab />}
           </div>
         </div>
       </section>
