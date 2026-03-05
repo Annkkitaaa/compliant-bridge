@@ -1,25 +1,61 @@
 @import "tailwindcss";
 
+/* ── Chainlink Dark Design System ────────────────────────────────────────────── */
+
+:root {
+  --bg:           #0D0E12;
+  --surface:      #13151A;
+  --surface-2:    #181A22;
+  --border:       #1F2235;
+  --border-light: #252840;
+  --blue:         #375BD2;
+  --blue-light:   #5B7FE8;
+  --blue-glow:    rgba(55, 91, 210, 0.35);
+  --blue-subtle:  rgba(55, 91, 210, 0.12);
+  --text:         #FFFFFF;
+  --text-muted:   #8892A4;
+  --text-dim:     #4A5568;
+  --green:        #16C784;
+  --green-subtle: rgba(22, 199, 132, 0.12);
+  --red:          #EA3943;
+  --red-subtle:   rgba(234, 57, 67, 0.12);
+  --amber:        #F5AC37;
+  --amber-subtle: rgba(245, 172, 55, 0.12);
+  --violet:       #7B5CF8;
+  --violet-subtle: rgba(123, 92, 248, 0.12);
+}
+
 * { box-sizing: border-box; }
 
+html { color-scheme: dark; }
+
 body {
-  background: #f0f4f8;
-  color: #1e293b;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  /* Screen-recording: slightly larger base for 1080p legibility */
   font-size: 15px;
 }
 
-.gradient-header {
-  background: linear-gradient(135deg, #0f1f3d 0%, #1e3a5f 60%, #1e40af 100%);
-}
+/* ── Dark card component ─────────────────────────────────────────────────────── */
 
 .card {
-  background: white;
+  background: var(--surface);
   border-radius: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 6px 16px rgba(0,0,0,0.05);
-  border: 1px solid rgba(226,232,240,0.9);
+  border: 1px solid var(--border);
+}
+
+.card-glow {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 0 1px var(--border), 0 4px 20px rgba(0,0,0,0.4);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card-glow:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue), 0 4px 32px var(--blue-glow);
 }
 
 .mono {
@@ -27,36 +63,43 @@ body {
   font-size: 0.8rem;
 }
 
-/* ── Tables ─────────────────────────────────────────────────────────────────── */
+/* ── Dark Tables ─────────────────────────────────────────────────────────────── */
 
 table { width: 100%; border-collapse: collapse; }
 
 thead th {
-  background: #f8fafc;
-  font-size: 11.5px;
+  background: var(--surface-2);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--text-muted);
   padding: 11px 18px;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border);
 }
 
 tbody tr {
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border);
   transition: background 0.12s;
 }
 
-tbody tr:hover { background: #fafbfc; }
+tbody tr:hover { background: var(--surface-2); }
 
 tbody td {
   padding: 13px 18px;
   font-size: 14px;
-  color: #334155;
+  color: #C8D0DC;
 }
 
 tbody tr:last-child { border-bottom: none; }
+
+/* ── Scrollbars ─────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
 
 /* ── Animations ─────────────────────────────────────────────────────────────── */
 
@@ -64,44 +107,150 @@ tbody tr:last-child { border-bottom: none; }
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .fade-in { animation: fadeIn 0.28s ease forwards; }
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
-}
-
-.pulse { animation: pulse-dot 2s infinite; }
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .slide-up { animation: slideUp 0.3s ease forwards; }
-
-/* ── Scrollbars ─────────────────────────────────────────────────────────────── */
-
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
-/* ── Demo mode — annotation entry ─────────────────────────────────────────── */
 
 @keyframes annotationIn {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.demo-annotation-enter { animation: annotationIn 0.25s ease forwards; }
 
-/* Applied in DemoAnnotation component via className */
-.demo-annotation-enter {
-  animation: annotationIn 0.25s ease forwards;
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.pulse { animation: pulse-dot 2s infinite; }
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--blue-glow), 0 0 60px rgba(55,91,210,0.15);
+    opacity: 0.7;
+  }
+  50% {
+    box-shadow: 0 0 40px var(--blue-glow), 0 0 100px rgba(55,91,210,0.25);
+    opacity: 1;
+  }
 }
 
-/* ── High-contrast focus rings for screen recording ─────────────────────────── */
+@keyframes orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(30px, -20px) scale(1.05); }
+  50%  { transform: translate(-20px, 30px) scale(0.95); }
+  75%  { transform: translate(20px, 20px) scale(1.02); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes orb-drift-2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(-40px, 20px) scale(1.08); }
+  66%  { transform: translate(20px, -30px) scale(0.92); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flow-line {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.animate-glow-pulse  { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-orb-1       { animation: orb-drift   18s ease-in-out infinite; }
+.animate-orb-2       { animation: orb-drift-2 22s ease-in-out infinite; }
+.animate-orb-3       { animation: orb-drift   26s ease-in-out infinite reverse; }
+.animate-float       { animation: float 4s ease-in-out infinite; }
+.animate-fade-up     { animation: fade-up 0.6s ease forwards; }
+.animate-fade-up-1   { animation: fade-up 0.6s 0.1s ease both; }
+.animate-fade-up-2   { animation: fade-up 0.6s 0.2s ease both; }
+.animate-fade-up-3   { animation: fade-up 0.6s 0.3s ease both; }
+.animate-fade-up-4   { animation: fade-up 0.6s 0.4s ease both; }
+
+/* ── Shimmer text ────────────────────────────────────────────────────────────── */
+
+.shimmer-text {
+  background: linear-gradient(90deg, #FFFFFF 0%, #375BD2 40%, #5B7FE8 60%, #FFFFFF 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ── Glow border ─────────────────────────────────────────────────────────────── */
+
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--blue), var(--violet), var(--blue));
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+.glow-border:hover::before { opacity: 1; }
+
+/* ── Blue button ─────────────────────────────────────────────────────────────── */
+
+.btn-blue {
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-blue::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-blue:hover {
+  background: var(--blue-light);
+  box-shadow: 0 4px 24px var(--blue-glow);
+  transform: translateY(-1px);
+}
+.btn-blue:hover::after { opacity: 1; }
+
+/* ── Focus rings ─────────────────────────────────────────────────────────────── */
 
 button:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--blue);
   outline-offset: 2px;
+}
+
+input:focus-visible, input:focus {
+  outline: none;
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px var(--blue-subtle);
 }

@@ -1,175 +1,129 @@
 "use client";
-import { Shield, Eye, Building2, Link2, ExternalLink, Columns2 } from "lucide-react";
-import PrivacyDiagram from "@/components/PrivacyDiagram";
+import { Shield, Eye, Building2, Columns2 } from "lucide-react";
+import Navbar        from "@/components/Navbar";
+import Hero          from "@/components/Hero";
+import HowItWorks    from "@/components/HowItWorks";
+import Footer        from "@/components/Footer";
 import PublicTab      from "@/components/tabs/PublicTab";
 import InstitutionTab from "@/components/tabs/InstitutionTab";
 import RegulatorTab   from "@/components/tabs/RegulatorTab";
 import SplitView      from "@/components/demo/SplitView";
 import FlowBar        from "@/components/demo/FlowBar";
-import DemoPanel, { DemoToggle } from "@/components/demo/DemoPanel";
+import DemoPanel      from "@/components/demo/DemoPanel";
 import { DemoProvider, useDemoContext, type TabId } from "@/context/DemoContext";
 
 // ── Tab config ────────────────────────────────────────────────────────────────
 
 const BASE_TABS: {
-  id: TabId; label: string; sub: string; icon: typeof Eye; color: string;
+  id: TabId; label: string; sub: string; icon: typeof Eye; accentColor: string;
 }[] = [
-  { id: "public",      label: "Public View",      sub: "Anyone · Minimal data",       icon: Eye,       color: "text-slate-300"  },
-  { id: "institution", label: "Institution View",  sub: "Wallet holder · Own data",    icon: Building2, color: "text-blue-300"   },
-  { id: "regulator",   label: "Regulator View",    sub: "Authorized · Full data",      icon: Shield,    color: "text-amber-300"  },
+  { id: "public",      label: "Public",      sub: "Anyone · Pass/Fail only",  icon: Eye,       accentColor: "#8892A4" },
+  { id: "institution", label: "Institution", sub: "Wallet holder · Own data", icon: Building2, accentColor: "#375BD2" },
+  { id: "regulator",   label: "Regulator",   sub: "Authorized · Full data",   icon: Shield,    accentColor: "#F5AC37" },
 ];
 
 const SPLIT_TAB = {
-  id:    "split" as TabId,
-  label: "Split View",
-  sub:   "Demo · All perspectives",
-  icon:  Columns2,
-  color: "text-violet-300",
+  id:          "split" as TabId,
+  label:       "Split View",
+  sub:         "Demo · All perspectives",
+  icon:        Columns2,
+  accentColor: "#7B5CF8",
 };
 
-const CHAIN_PILL = (
-  <div className="flex items-center gap-2 flex-wrap">
-    {[
-      { dot: "bg-emerald-400", label: "Sepolia" },
-      { dot: "bg-violet-400",  label: "Arb Sepolia" },
-    ].map(c => (
-      <div key={c.label} className="flex items-center gap-1.5 bg-white/10 border border-white/15 backdrop-blur-sm rounded-full px-3 py-1.5">
-        <span className={`w-2 h-2 rounded-full ${c.dot} pulse inline-block`} />
-        <span className="text-xs font-medium text-white/80">{c.label}</span>
-      </div>
-    ))}
-    <div className="flex items-center gap-1.5 bg-white/10 border border-white/15 backdrop-blur-sm rounded-full px-3 py-1.5">
-      <Link2 className="w-3 h-3 text-white/60" />
-      <span className="text-xs font-medium text-white/70">CCIP Live</span>
-    </div>
-  </div>
-);
-
-// ── Inner page (reads demo context) ──────────────────────────────────────────
+// ── Inner page ────────────────────────────────────────────────────────────────
 
 function HomeContent() {
   const { demoMode, activeTab, setActiveTab } = useDemoContext();
-
   const tabs = demoMode ? [...BASE_TABS, SPLIT_TAB] : BASE_TABS;
 
   return (
-    <div className={`min-h-screen ${demoMode ? "pb-20" : ""}`} style={{ background: "#f0f4f8" }}>
+    <div className={`min-h-screen ${demoMode ? "pb-20" : ""}`}
+      style={{ background: "#0D0E12" }}
+    >
+      <Navbar />
+      <Hero />
+      <HowItWorks />
 
-      {/* ── Header ──────────────────────────────────────────────── */}
-      <header className="gradient-header">
+      {/* ── Dashboard section ────────────────────────────────────────── */}
+      <section id="app" className="py-16"
+        style={{ background: "linear-gradient(180deg, #0F1118 0%, #0D0E12 100%)" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="pt-8 pb-6">
 
-            {/* Top bar */}
-            <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/30 border border-blue-400/30 flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-blue-300" />
-                  </div>
-                  <span className="text-blue-300 text-xs font-bold tracking-widest uppercase">
-                    Chainlink · CCIP · CRE
-                  </span>
-                </div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                  CrossChain Compliance Gateway
-                </h1>
-                <p className="text-blue-200/80 mt-1.5 text-sm sm:text-base">
-                  Privacy-Preserving Compliance for Tokenized Assets · Check once, verify everywhere
-                </p>
-              </div>
+          {/* Section header */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4"
+              style={{ background: "rgba(55,91,210,0.08)", border: "1px solid rgba(55,91,210,0.2)" }}
+            >
+              <span className="text-xs font-bold uppercase tracking-widest text-[#375BD2]">
+                Live Dashboard
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-3">
+              Three Views. One System.
+            </h2>
+            <p className="text-[#8892A4] max-w-lg mx-auto text-[15px]">
+              Same blockchain data, different access levels — enforced by smart contracts and Chainlink CRE.
+            </p>
+          </div>
 
-              {/* Right cluster */}
-              <div className="flex flex-col items-end gap-2">
-                <div className="flex items-center gap-3">
-                  {CHAIN_PILL}
-                  <DemoToggle />
-                </div>
-                <a
-                  href="https://ccip.chain.link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-blue-300/60 hover:text-blue-300 transition-colors"
+          {/* Flow bar — demo only */}
+          <FlowBar />
+
+          {/* Tab bar */}
+          <div className="flex gap-1 p-1 rounded-2xl mb-6 mt-4"
+            style={{ background: "#13151A", border: "1px solid #1F2235" }}
+          >
+            {tabs.map(tab => {
+              const Icon     = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className="flex-1 flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
+                  style={{
+                    background:  isActive ? "#1F2235"                       : "transparent",
+                    color:       isActive ? "#FFFFFF"                       : "#8892A4",
+                    border:      isActive ? `1px solid ${tab.accentColor}33` : "1px solid transparent",
+                    boxShadow:   isActive ? `0 0 12px ${tab.accentColor}20` : "none",
+                  }}
                 >
-                  <ExternalLink className="w-3 h-3" />
-                  Track CCIP messages
-                </a>
-              </div>
-            </div>
+                  <Icon
+                    className="w-4 h-4 flex-shrink-0"
+                    style={{ color: isActive ? tab.accentColor : "#4A5568" }}
+                  />
+                  <div className="text-left hidden sm:block">
+                    <p className="leading-tight">{tab.label}</p>
+                    <p className="text-[10px] font-normal leading-tight"
+                      style={{ color: isActive ? "#8892A4" : "#4A5568" }}
+                    >
+                      {tab.sub}
+                    </p>
+                  </div>
+                  <span className="sm:hidden">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-            {/* Privacy diagram */}
-            <PrivacyDiagram />
-
-            {/* Flow bar — demo only */}
-            <FlowBar />
-
-            {/* Tab bar */}
-            <div className="flex gap-2 mt-5 pb-0">
-              {tabs.map(tab => {
-                const Icon     = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2.5 px-5 py-3 rounded-t-xl text-sm font-semibold transition-all duration-200 ${
-                      isActive
-                        ? "bg-[#f0f4f8] text-slate-800 shadow-lg"
-                        : "text-white/60 hover:text-white/90 hover:bg-white/10"
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-slate-600" : tab.color}`} />
-                    <div className="text-left hidden sm:block">
-                      <p className={`leading-tight ${isActive ? "text-slate-800" : "text-white/80"}`}>
-                        {tab.label}
-                      </p>
-                      <p className={`text-xs font-normal leading-tight ${isActive ? "text-slate-400" : "text-white/40"}`}>
-                        {tab.sub}
-                      </p>
-                    </div>
-                    <span className="sm:hidden">{tab.label}</span>
-                  </button>
-                );
-              })}
-            </div>
+          {/* Tab content */}
+          <div>
+            {activeTab === "public"      && <PublicTab />}
+            {activeTab === "institution" && <InstitutionTab />}
+            {activeTab === "regulator"   && <RegulatorTab />}
+            {activeTab === "split"       && <SplitView />}
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* ── Tab content ─────────────────────────────────────────── */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {activeTab === "public"      && <PublicTab />}
-        {activeTab === "institution" && <InstitutionTab />}
-        {activeTab === "regulator"   && <RegulatorTab />}
-        {activeTab === "split"       && <SplitView />}
-      </main>
-
-      {/* ── Footer ──────────────────────────────────────────────── */}
-      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="border-t border-slate-200 pt-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap gap-4 text-xs text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <Shield className="w-3 h-3" /> ComplianceGateway · Sepolia:
-              <span className="mono text-slate-500">0x472E…d33</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Shield className="w-3 h-3" /> ComplianceGateway · Arb Sepolia:
-              <span className="mono text-slate-500">0x64f0…F76</span>
-            </span>
-          </div>
-          <p className="text-xs text-slate-400">
-            Built with Chainlink CCIP · Chainlink CRE · Confidential HTTP
-          </p>
-        </div>
-      </footer>
-
-      {/* ── Demo panel ─────────────────────────────────────────── */}
+      <Footer />
       <DemoPanel />
     </div>
   );
 }
 
-// ── Root (provides context) ────────────────────────────────────────────────────
+// ── Root ──────────────────────────────────────────────────────────────────────
 
 export default function Home() {
   return (

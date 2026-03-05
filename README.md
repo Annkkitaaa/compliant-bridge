@@ -236,7 +236,7 @@ The API provides five endpoints that simulate real compliance providers:
 - `POST /api/v1/kyc-status` — KYC verification status
 - `POST /api/v1/accredited-investor` — SEC accreditation check
 - `POST /api/v1/jurisdiction-check` — Geographic restrictions
-- `POST /api/v1/full-check` — Combined check (convenience)
+- `POST /api/v1/full-compliance-check` — Combined check (convenience)
 
 ### 3. Simulate the CRE workflow
 

@@ -30,16 +30,18 @@ function daysLeft(ts: bigint) {
 }
 
 function TierBadge({ tier }: { tier: number }) {
-  const styles = [
-    "",
-    "bg-sky-50 text-sky-700 border-sky-200",
-    "bg-violet-50 text-violet-700 border-violet-200",
-    "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200",
+  const configs = [
+    { color: "#8892A4", bg: "rgba(136,146,164,0.12)", border: "rgba(136,146,164,0.25)", label: "Retail"        },
+    { color: "#5B7FE8", bg: "rgba(91,127,232,0.12)",  border: "rgba(91,127,232,0.25)",  label: "Retail"        },
+    { color: "#7B5CF8", bg: "rgba(123,92,248,0.12)",  border: "rgba(123,92,248,0.25)",  label: "Accredited"    },
+    { color: "#F5AC37", bg: "rgba(245,172,55,0.12)",  border: "rgba(245,172,55,0.25)",  label: "Institutional" },
   ];
-  const labels = ["", "Retail", "Accredited", "Institutional"];
+  const cfg = configs[tier] ?? configs[1];
   return (
-    <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${styles[tier] ?? styles[1]}`}>
-      TIER {tier} · {labels[tier] ?? "Custom"}
+    <span className="text-xs font-bold px-2.5 py-1 rounded-full"
+      style={{ color: cfg.color, background: cfg.bg, border: `1px solid ${cfg.border}` }}
+    >
+      TIER {tier} · {cfg.label}
     </span>
   );
 }
@@ -91,7 +93,6 @@ export default function InstitutionTab() {
         tokenSep.balanceOf(addr),
       ]);
 
-      // Check if attestation exists (validUntil > 0)
       if (att.validUntil === 0n) {
         setAttError("No compliance attestation found for this address.");
         setAttestation(null);
@@ -112,16 +113,14 @@ export default function InstitutionTab() {
 
       setSepoliaBalance(formatCBT(rawBalSep));
 
-      // Arb Sepolia balance (independent provider)
       try {
         const arbProvider = getReadProvider("arbSepolia");
-        const tokenArb = new ethers.Contract(ADDRESSES.arbSepolia.token, TOKEN_ABI, arbProvider);
-        const rawBalArb = await tokenArb.balanceOf(addr);
+        const tokenArb    = new ethers.Contract(ADDRESSES.arbSepolia.token, TOKEN_ABI, arbProvider);
+        const rawBalArb   = await tokenArb.balanceOf(addr);
         setArbSepoliaBalance(formatCBT(rawBalArb));
 
-        // Check if attested on Arb Sepolia (remote)
         const arbGateway = new ethers.Contract(ADDRESSES.arbSepolia.gateway, GATEWAY_ABI, arbProvider);
-        const attArb = await arbGateway.getAttestation(addr);
+        const attArb     = await arbGateway.getAttestation(addr);
         setIsRemote(attArb.validUntil > 0n);
         if (attArb.validUntil > 0n) setBridged(true);
       } catch { /* Arb Sepolia unavailable */ }
@@ -164,7 +163,6 @@ export default function InstitutionTab() {
       const signer = await getBrowserSigner();
       const sender = new ethers.Contract(ADDRESSES.sepolia.sender, SENDER_ABI, signer);
 
-      // Contract pays CCIP fee from its own LINK balance — no ETH required from caller
       const attTuple = [
         attestation.subject,
         attestation.tier,
@@ -192,12 +190,7 @@ export default function InstitutionTab() {
       if (msg.includes("user rejected") || msg.includes("User denied")) {
         addToast({ type: "info", title: "Transaction cancelled" });
       } else if (msg.includes("OnlyAuthorized") || msg.includes("Unauthorized")) {
-        // Demo fallback — real CCIP message was sent from test scripts
-        addToast({
-          type: "info",
-          title: "Demo mode",
-          message: "Sender not yet authorized. Attestation was already bridged via CCIP in our demo run.",
-        });
+        addToast({ type: "info", title: "Demo mode", message: "Attestation already bridged via CCIP in our demo run." });
         setBridged(true);
         setBridgeTx(ADDRESSES.sepolia.sender);
       } else {
@@ -208,13 +201,16 @@ export default function InstitutionTab() {
     }
   }
 
-  // ── Refresh ───────────────────────────────────────────────────────────────
-
   async function handleRefresh() {
     if (!address) return;
     await loadData(address);
     addToast({ type: "success", title: "Refreshed from chain" });
   }
+
+  // ── Dark surface helpers ─────────────────────────────────────────────────
+
+  const surface = { background: "#13151A", border: "1px solid #1F2235" };
+  const surfaceHover = "hover:bg-[#181A22]";
 
   // ── Not connected ─────────────────────────────────────────────────────────
 
@@ -222,30 +218,33 @@ export default function InstitutionTab() {
     return (
       <div className="fade-in flex flex-col items-center justify-center min-h-[480px] gap-6">
         <ToastContainer toasts={toasts} onDismiss={dismissToast} />
-        <div className="card p-10 text-center max-w-md w-full">
-          <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center mx-auto mb-5">
-            <Wallet className="w-8 h-8 text-blue-600" />
+        <div className="rounded-2xl p-10 text-center max-w-md w-full" style={surface}>
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
+            style={{ background: "rgba(55,91,210,0.15)", border: "1px solid rgba(55,91,210,0.3)" }}
+          >
+            <Wallet className="w-8 h-8 text-[#375BD2]" />
           </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-2">Institution Portal</h3>
-          <p className="text-slate-500 text-sm mb-6">
+          <h3 className="text-xl font-bold text-white mb-2">Institution Portal</h3>
+          <p className="text-[#8892A4] text-sm mb-6">
             Connect your wallet to view your compliance attestation, token balances, and cross-chain status.
           </p>
           {wrongChain && (
-            <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5 mb-4 text-left">
-              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
-              <p className="text-xs text-amber-700">Please switch to Sepolia testnet in MetaMask.</p>
+            <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 mb-4 text-left"
+              style={{ background: "rgba(245,172,55,0.1)", border: "1px solid rgba(245,172,55,0.25)" }}
+            >
+              <AlertTriangle className="w-4 h-4 text-[#F5AC37] flex-shrink-0" />
+              <p className="text-xs text-[#F5AC37]">Please switch to Sepolia testnet in MetaMask.</p>
             </div>
           )}
           <button
             onClick={handleConnect}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 shadow-lg shadow-blue-100"
+            className="btn-blue w-full py-3 px-6 flex items-center justify-center gap-2 text-[15px]"
           >
             <Wallet className="w-4 h-4" />
             Connect Wallet
           </button>
-          <p className="text-xs text-slate-400 mt-4">
-            Reads live compliance data from Sepolia. Try with address{" "}
-            <span className="mono">0xAA00…0001</span> (Alice · Tier 2 · US/NY)
+          <p className="text-xs text-[#4A5568] mt-4">
+            Try with address <span className="mono text-[#8892A4]">0xAA00…0001</span> (Alice · Tier 2 · US/NY)
           </p>
         </div>
       </div>
@@ -262,58 +261,63 @@ export default function InstitutionTab() {
       <DemoAnnotation forTab="institution" />
 
       {/* Connected wallet header */}
-      <div className="card p-4 flex items-center justify-between">
+      <div className="rounded-2xl p-4 flex items-center justify-between" style={surface}>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-violet-500" />
+          <div className="w-8 h-8 rounded-full"
+            style={{ background: "linear-gradient(135deg, #375BD2, #7B5CF8)" }}
+          />
           <div>
-            <p className="text-sm font-semibold text-slate-800">
+            <p className="text-sm font-semibold text-white">
               {shortAddr(address, 8, 6)}{" "}
-              <span className="text-slate-400 font-normal text-xs">
+              <span className="text-[#4A5568] font-normal text-xs">
                 {address.toLowerCase() === "0xaa00000000000000000000000000000000000001" ? "(Alice)" : ""}
               </span>
             </p>
-            <p className="text-xs text-slate-400">Connected · Sepolia</p>
+            <p className="text-xs text-[#8892A4]">Connected · Sepolia</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={handleRefresh}
-            className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+          <button onClick={handleRefresh}
+            className={`p-1.5 rounded-lg text-[#4A5568] hover:text-[#8892A4] transition-colors ${surfaceHover}`}
             title="Refresh from chain"
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block pulse" />
-            <span className="text-xs text-emerald-600 font-semibold">Active</span>
+            <span className="w-2 h-2 rounded-full bg-[#16C784] inline-block pulse" />
+            <span className="text-xs text-[#16C784] font-semibold">Active</span>
           </span>
         </div>
       </div>
 
-      {/* Loading state */}
+      {/* Loading */}
       {attLoading && (
-        <div className="card p-8 text-center">
-          <RefreshCw className="w-6 h-6 text-blue-400 animate-spin mx-auto mb-3" />
-          <p className="text-slate-500 text-sm">Loading attestation from Sepolia…</p>
+        <div className="rounded-2xl p-8 text-center" style={surface}>
+          <RefreshCw className="w-6 h-6 text-[#375BD2] animate-spin mx-auto mb-3" />
+          <p className="text-[#8892A4] text-sm">Loading attestation from Sepolia…</p>
         </div>
       )}
 
-      {/* Error state */}
+      {/* Error */}
       {!attLoading && attError && (
-        <div className="card p-5 border border-amber-200 bg-amber-50 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+        <div className="rounded-2xl p-5 flex items-start gap-3"
+          style={{ background: "rgba(245,172,55,0.08)", border: "1px solid rgba(245,172,55,0.25)" }}
+        >
+          <AlertTriangle className="w-5 h-5 text-[#F5AC37] flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-amber-800">No attestation found</p>
-            <p className="text-xs text-amber-600 mt-1">{attError}</p>
+            <p className="text-sm font-semibold text-[#F5AC37]">No attestation found</p>
+            <p className="text-xs text-[#8892A4] mt-1">{attError}</p>
           </div>
         </div>
       )}
 
       {/* Revoked banner */}
       {!attLoading && isRevoked && (
-        <div className="card p-4 border border-red-200 bg-red-50 flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
-          <p className="text-sm font-semibold text-red-700">
+        <div className="rounded-2xl p-4 flex items-center gap-3"
+          style={{ background: "rgba(234,57,67,0.08)", border: "1px solid rgba(234,57,67,0.25)" }}
+        >
+          <AlertTriangle className="w-5 h-5 text-[#EA3943] flex-shrink-0" />
+          <p className="text-sm font-semibold text-[#EA3943]">
             This address has been revoked. Transfers will be blocked on all chains.
           </p>
         </div>
@@ -323,12 +327,14 @@ export default function InstitutionTab() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
           {/* Attestation Card */}
-          <div className="lg:col-span-2 card p-5 space-y-4">
+          <div className="lg:col-span-2 rounded-2xl p-5 space-y-4" style={surface}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-blue-600" />
-                <span className="font-semibold text-slate-700">Your Compliance Attestation</span>
-                <span className="text-xs text-emerald-600 font-medium bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                <Shield className="w-4 h-4 text-[#375BD2]" />
+                <span className="font-semibold text-white text-sm">Your Compliance Attestation</span>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full"
+                  style={{ background: "rgba(22,199,132,0.1)", border: "1px solid rgba(22,199,132,0.25)", color: "#16C784" }}
+                >
                   Live · Sepolia
                 </span>
               </div>
@@ -342,105 +348,103 @@ export default function InstitutionTab() {
                 { label: "Issued",        value: formatDate(attestation.issuedAt),                 icon: "📋" },
                 { label: "Source Chain",  value: attestation.sourceChainId === 11155111n ? "Sepolia" : `Chain ${attestation.sourceChainId}`, icon: "⛓️" },
               ].map(({ label, value, icon }) => (
-                <div key={label} className="bg-slate-50 rounded-xl p-3 border border-slate-100">
-                  <p className="text-xs text-slate-400 font-semibold uppercase tracking-wide mb-1">{icon} {label}</p>
-                  <p className="text-sm font-semibold text-slate-700">{value}</p>
+                <div key={label} className="rounded-xl p-3"
+                  style={{ background: "#181A22", border: "1px solid #252840" }}
+                >
+                  <p className="text-xs text-[#8892A4] font-semibold uppercase tracking-wide mb-1">{icon} {label}</p>
+                  <p className="text-sm font-semibold text-white">{value}</p>
                 </div>
               ))}
             </div>
 
             {/* Expiry bar */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-xs text-slate-500 font-medium">
+                  <Clock className="w-3.5 h-3.5 text-[#8892A4]" />
+                  <span className="text-xs text-[#8892A4] font-medium">
                     Valid until {formatDate(attestation.validUntil)}
                   </span>
                 </div>
-                <span className={`text-xs font-bold ${days < 30 ? "text-amber-600" : "text-emerald-600"}`}>
+                <span className={`text-xs font-bold ${days < 30 ? "text-[#F5AC37]" : "text-[#16C784]"}`}>
                   {days} days remaining
                 </span>
               </div>
-              <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: "#1F2235" }}>
                 <div
-                  className={`h-full rounded-full transition-all duration-700 ${days < 30 ? "bg-amber-400" : "bg-emerald-400"}`}
-                  style={{ width: `${Math.min(100, (days / 365) * 100)}%` }}
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{
+                    width: `${Math.min(100, (days / 365) * 100)}%`,
+                    background: days < 30 ? "#F5AC37" : "#16C784",
+                    boxShadow: days < 30 ? "0 0 8px rgba(245,172,55,0.5)" : "0 0 8px rgba(22,199,132,0.5)",
+                  }}
                 />
               </div>
             </div>
 
             {/* Check ID */}
-            <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
-              <p className="text-xs text-slate-400 font-semibold uppercase tracking-wide mb-1">Check ID (on-chain)</p>
-              <p className="mono text-slate-600 break-all text-xs">{attestation.checkId}</p>
+            <div className="rounded-xl p-3" style={{ background: "#181A22", border: "1px solid #252840" }}>
+              <p className="text-xs text-[#8892A4] font-semibold uppercase tracking-wide mb-1">Check ID (on-chain)</p>
+              <p className="mono text-[#8892A4] break-all text-xs">{attestation.checkId}</p>
             </div>
           </div>
 
           {/* Balances + Actions */}
           <div className="space-y-4">
-            <div className="card p-4 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Token Balances</p>
+            <div className="rounded-2xl p-4 space-y-3" style={surface}>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#8892A4]">Token Balances</p>
               {[
-                { chain: "Sepolia",          chainId: 11155111, balance: sepoliaBalance,    tag: "ETH" },
-                { chain: "Arbitrum Sepolia", chainId: 421614,  balance: arbSepoliaBalance, tag: "ARB" },
+                { chain: "Sepolia",          chainId: 11155111, balance: sepoliaBalance,    color: "#375BD2" },
+                { chain: "Arbitrum Sepolia", chainId: 421614,  balance: arbSepoliaBalance, color: "#7B5CF8" },
               ].map(b => (
-                <div key={b.chain} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                <div key={b.chain} className="flex items-center justify-between py-2"
+                  style={{ borderBottom: "1px solid #1F2235" }}
+                >
                   <div>
-                    <p className="text-sm font-semibold text-slate-700">
-                      {b.balance} <span className="text-slate-400 font-normal">CBT</span>
+                    <p className="text-sm font-semibold text-white">
+                      {b.balance} <span className="text-[#8892A4] font-normal">CBT</span>
                     </p>
-                    <p className="text-xs text-slate-400">{b.chain}</p>
+                    <p className="text-xs text-[#8892A4]">{b.chain}</p>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${
-                    b.chainId === 11155111
-                      ? "bg-blue-50 text-blue-600 border-blue-200"
-                      : "bg-purple-50 text-purple-600 border-purple-200"
-                  }`}>{b.tag}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+                    style={{ color: b.color, background: `${b.color}20`, border: `1px solid ${b.color}40` }}
+                  >
+                    {b.chainId === 11155111 ? "ETH" : "ARB"}
+                  </span>
                 </div>
               ))}
             </div>
 
             {/* Actions */}
-            <div className="card p-4 space-y-2">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Actions</p>
-              <button
-                onClick={handleRefresh}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-all duration-150 group"
+            <div className="rounded-2xl p-4 space-y-2" style={surface}>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#8892A4] mb-3">Actions</p>
+              <button onClick={handleRefresh}
+                className="btn-blue w-full flex items-center justify-between px-3 py-2.5 text-sm"
               >
                 <div className="flex items-center gap-2">
                   <RefreshCw className="w-4 h-4" />
                   Refresh Compliance
                 </div>
-                <ChevronRight className="w-4 h-4 opacity-60 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 opacity-60" />
               </button>
               <button
                 onClick={handleBridge}
                 disabled={bridging || bridged || isRevoked}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group ${
-                  bridged
-                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default"
-                    : bridging
-                    ? "bg-violet-50 text-violet-600 border border-violet-200 cursor-wait"
-                    : isRevoked
-                    ? "bg-red-50 text-red-400 border border-red-200 cursor-not-allowed opacity-60"
-                    : "bg-slate-50 hover:bg-violet-50 text-slate-700 hover:text-violet-700 border border-slate-200 hover:border-violet-200"
-                }`}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
+                style={bridged
+                  ? { background: "rgba(22,199,132,0.1)", border: "1px solid rgba(22,199,132,0.3)", color: "#16C784" }
+                  : bridging
+                  ? { background: "rgba(123,92,248,0.1)", border: "1px solid rgba(123,92,248,0.3)", color: "#7B5CF8" }
+                  : isRevoked
+                  ? { background: "rgba(234,57,67,0.05)", border: "1px solid rgba(234,57,67,0.2)", color: "#EA394360", cursor: "not-allowed" }
+                  : { background: "#1F2235", border: "1px solid #252840", color: "#8892A4" }
+                }
               >
                 <div className="flex items-center gap-2">
-                  {bridged
-                    ? <CheckCircle className="w-4 h-4" />
-                    : <Send className="w-4 h-4" />
-                  }
-                  {bridged
-                    ? "Bridged to Arb Sepolia"
-                    : bridging
-                    ? "Sending via CCIP…"
-                    : "Bridge Attestation"}
+                  {bridged ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+                  {bridged ? "Bridged to Arb Sepolia" : bridging ? "Sending via CCIP…" : "Bridge Attestation"}
                 </div>
-                {!bridged && (
-                  <ChevronRight className="w-4 h-4 opacity-40 group-hover:translate-x-0.5 transition-transform" />
-                )}
+                {!bridged && <ChevronRight className="w-4 h-4 opacity-40" />}
               </button>
             </div>
           </div>
@@ -449,73 +453,77 @@ export default function InstitutionTab() {
 
       {/* Cross-chain status */}
       {!attLoading && attestation && (
-        <div className="card p-5">
+        <div className="rounded-2xl p-5" style={surface}>
           <div className="flex items-center gap-2 mb-4">
-            <Globe className="w-4 h-4 text-blue-600" />
-            <span className="font-semibold text-slate-700">Cross-Chain Attestation Status</span>
-            <span className="text-xs text-slate-400 ml-auto">Your attestation is portable across chains</span>
+            <Globe className="w-4 h-4 text-[#375BD2]" />
+            <span className="font-semibold text-white text-sm">Cross-Chain Attestation Status</span>
+            <span className="text-xs text-[#4A5568] ml-auto">Portable across chains</span>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             {/* Source */}
-            <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-              <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white">S</div>
+            <div className="flex items-center gap-2 px-4 py-3 rounded-xl"
+              style={{ background: "rgba(55,91,210,0.1)", border: "1px solid rgba(55,91,210,0.3)" }}
+            >
+              <div className="w-7 h-7 rounded-full bg-[#375BD2] flex items-center justify-center text-xs font-bold text-white">S</div>
               <div>
-                <p className="text-xs font-bold text-blue-700">Sepolia</p>
-                <p className="text-xs text-blue-400">Source · Local</p>
+                <p className="text-xs font-bold text-[#5B7FE8]">Sepolia</p>
+                <p className="text-xs text-[#8892A4]">Source · Local</p>
               </div>
-              <CheckCircle className="w-4 h-4 text-blue-500 ml-1" />
+              <CheckCircle className="w-4 h-4 text-[#375BD2] ml-1" />
             </div>
 
-            <ArrowRight className="w-5 h-5 text-slate-300 flex-shrink-0" />
-            <div className="text-xs text-slate-400 text-center flex-shrink-0">
-              <p className="font-medium">CCIP</p>
+            <ArrowRight className="w-5 h-5 text-[#1F2235] flex-shrink-0" />
+            <div className="text-xs text-[#4A5568] text-center flex-shrink-0">
+              <p className="font-medium text-[#8892A4]">CCIP</p>
               <p>~8 min</p>
             </div>
-            <ArrowRight className="w-5 h-5 text-slate-300 flex-shrink-0" />
+            <ArrowRight className="w-5 h-5 text-[#1F2235] flex-shrink-0" />
 
-            {/* Destination */}
             {(isRemote || bridged) ? (
-              <div className="flex items-center gap-2 bg-violet-50 border border-violet-200 rounded-xl px-4 py-3">
-                <div className="w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center text-xs font-bold text-white">A</div>
+              <div className="flex items-center gap-2 px-4 py-3 rounded-xl"
+                style={{ background: "rgba(123,92,248,0.1)", border: "1px solid rgba(123,92,248,0.3)" }}
+              >
+                <div className="w-7 h-7 rounded-full bg-[#7B5CF8] flex items-center justify-center text-xs font-bold text-white">A</div>
                 <div>
-                  <p className="text-xs font-bold text-violet-700">Arb Sepolia</p>
-                  <p className="text-xs text-violet-400">Remote · Bridged</p>
+                  <p className="text-xs font-bold text-[#9B7FFF]">Arb Sepolia</p>
+                  <p className="text-xs text-[#8892A4]">Remote · Bridged</p>
                 </div>
-                <CheckCircle className="w-4 h-4 text-violet-500 ml-1" />
+                <CheckCircle className="w-4 h-4 text-[#7B5CF8] ml-1" />
               </div>
             ) : (
-              <div className="flex items-center gap-2 bg-slate-50 border border-dashed border-slate-300 rounded-xl px-4 py-3">
-                <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-400">A</div>
+              <div className="flex items-center gap-2 px-4 py-3 rounded-xl"
+                style={{ background: "#13151A", border: "1px dashed #1F2235" }}
+              >
+                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-[#4A5568]"
+                  style={{ background: "#1F2235" }}
+                >A</div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Arb Sepolia</p>
-                  <p className="text-xs text-slate-300">Not bridged yet</p>
+                  <p className="text-xs font-bold text-[#4A5568]">Arb Sepolia</p>
+                  <p className="text-xs text-[#4A5568]">Not bridged yet</p>
                 </div>
               </div>
             )}
 
             <div className="flex-1 text-right">
               <div className="flex items-center gap-1.5 justify-end">
-                <Link2 className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-xs text-slate-400">
-                  Attestation valid on all bridged chains simultaneously
-                </span>
+                <Link2 className="w-3.5 h-3.5 text-[#4A5568]" />
+                <span className="text-xs text-[#4A5568]">Valid on all bridged chains simultaneously</span>
               </div>
             </div>
           </div>
 
           {(isRemote || bridged) && (
-            <div className="mt-3 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2.5 flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-              <p className="text-xs text-emerald-700">
-                Your compliance is recognized on Arbitrum Sepolia — trade across chains without re-verification.
+            <div className="mt-3 px-4 py-2.5 rounded-xl flex items-center gap-2"
+              style={{ background: "rgba(22,199,132,0.08)", border: "1px solid rgba(22,199,132,0.2)" }}
+            >
+              <CheckCircle className="w-4 h-4 text-[#16C784] flex-shrink-0" />
+              <p className="text-xs text-[#16C784]">
+                Compliance recognized on Arbitrum Sepolia — trade cross-chain without re-verification.
                 {bridgeTx && (
                   <> Tx:{" "}
-                    <a
-                      href={`${ADDRESSES.sepolia.explorer}/tx/${bridgeTx}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
+                    <a href={`${ADDRESSES.sepolia.explorer}/tx/${bridgeTx}`} target="_blank" rel="noopener noreferrer"
+                      className="underline opacity-70 hover:opacity-100"
                     >
                       {bridgeTx.slice(0, 14)}…
                     </a>

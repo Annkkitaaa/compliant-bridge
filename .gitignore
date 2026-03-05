@@ -41,5 +41,12 @@ npm-debug.log*
 
 # Testing
 .nyc_output/
-.claude
-.env
+
+# Claude Code (AI agent — settings, memory, skills, session data)
+.claude/
+**/CLAUDE.md
+
+# Playwright test artifacts (generated screenshots & results)
+frontend/e2e/design.spec.ts-snapshots/
+frontend/test-results/
+frontend/playwright-report/
