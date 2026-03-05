@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { DEMO_STEPS, type DemoTabId } from "@/lib/demoScript";
 
 export type { DemoTabId };
@@ -32,33 +32,34 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [activeTab,   setActiveTab]   = useState<TabId>("public");
 
+  // Sync activeTab with currentStep whenever step changes in demo mode.
+  // useEffect avoids calling setState inside a state-updater (React 18 batching glitch).
+  useEffect(() => {
+    if (demoMode) {
+      setActiveTab(DEMO_STEPS[currentStep].tab);
+    }
+  }, [demoMode, currentStep]);
+
   const toggleDemo = useCallback(() => {
     setDemoMode(d => {
-      if (!d) { setCurrentStep(0); setActiveTab("public"); }
+      // Reset BOTH entering and exiting — so exit always returns to clean state
+      setCurrentStep(0);
+      setActiveTab("public");
       return !d;
     });
   }, []);
 
+  // Step updaters only change currentStep; useEffect above syncs the tab
   const setStep = useCallback((n: number) => {
-    const clamped = Math.max(0, Math.min(n, DEMO_STEPS.length - 1));
-    setCurrentStep(clamped);
-    setActiveTab(DEMO_STEPS[clamped].tab);
+    setCurrentStep(Math.max(0, Math.min(n, DEMO_STEPS.length - 1)));
   }, []);
 
   const nextStep = useCallback(() => {
-    setCurrentStep(s => {
-      const next = Math.min(s + 1, DEMO_STEPS.length - 1);
-      setActiveTab(DEMO_STEPS[next].tab);
-      return next;
-    });
+    setCurrentStep(s => Math.min(s + 1, DEMO_STEPS.length - 1));
   }, []);
 
   const prevStep = useCallback(() => {
-    setCurrentStep(s => {
-      const prev = Math.max(s - 1, 0);
-      setActiveTab(DEMO_STEPS[prev].tab);
-      return prev;
-    });
+    setCurrentStep(s => Math.max(s - 1, 0));
   }, []);
 
   return (

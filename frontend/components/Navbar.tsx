@@ -7,6 +7,16 @@ export default function Navbar() {
   const { demoMode, toggleDemo } = useDemoContext();
   const [scrolled, setScrolled] = useState(false);
 
+  function handleDemoClick() {
+    toggleDemo();
+    if (!demoMode) {
+      setTimeout(() => {
+        const el = document.getElementById('app');
+        if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72 });
+      }, 50);
+    }
+  }
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -65,7 +75,7 @@ export default function Navbar() {
 
             {/* Demo toggle */}
             <button
-              onClick={toggleDemo}
+              onClick={handleDemoClick}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all duration-200 ${
                 demoMode
                   ? "bg-[#F5AC37] border-[#F5AC37] text-black shadow-[0_0_16px_rgba(245,172,55,0.4)]"

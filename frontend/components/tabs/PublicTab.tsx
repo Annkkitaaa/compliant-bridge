@@ -255,7 +255,7 @@ export default function PublicTab() {
                       }
                     >{tx.chain}</span>
                   </td>
-                  <td className="text-[#4A5568] text-xs">{timeAgo(tx.timestamp)}</td>
+                  <td className="text-[#4A5568] text-xs" suppressHydrationWarning>{timeAgo(tx.timestamp)}</td>
                   <td>
                     <div className="flex items-center gap-1.5 group relative cursor-not-allowed">
                       <span className="select-none blur-[4px] text-sm mono text-[#4A5568]">

@@ -14,6 +14,7 @@ export default function DemoPanel() {
 
   return (
     <div
+      data-testid="demo-panel"
       className="fixed bottom-0 left-0 right-0 z-40"
       style={{
         background: "rgba(13,14,18,0.96)",
@@ -26,7 +27,7 @@ export default function DemoPanel() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
 
         {/* Dot progress */}
-        <div className="flex-shrink-0 flex items-center gap-1.5">
+        <div data-testid="demo-dots" className="flex-shrink-0 flex items-center gap-1.5">
           {DEMO_STEPS.map((_, i) => (
             <button
               key={i}
@@ -107,9 +108,20 @@ export default function DemoPanel() {
 // Thin toggle button for the navbar
 export function DemoToggle() {
   const { demoMode, toggleDemo } = useDemoContext();
+
+  function handleClick() {
+    toggleDemo();
+    if (!demoMode) {
+      setTimeout(() => {
+        const el = document.getElementById('app');
+        if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72 });
+      }, 50);
+    }
+  }
+
   return (
     <button
-      onClick={toggleDemo}
+      onClick={handleClick}
       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all duration-200"
       style={demoMode
         ? { background: "#F5AC37", borderColor: "#F5AC37", color: "black", boxShadow: "0 0 16px rgba(245,172,55,0.4)" }
