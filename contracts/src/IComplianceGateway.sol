@@ -38,4 +38,8 @@ interface IComplianceGateway {
     function isCompliant(address subject) external view returns (bool);
 
     function isAttestationValid(address subject) external view returns (bool);
+
+    function isCompliantWithTier(address subject, uint8 requiredTier) external view returns (bool);
+
+    function getComplianceTier(address subject) external view returns (uint8);
 }

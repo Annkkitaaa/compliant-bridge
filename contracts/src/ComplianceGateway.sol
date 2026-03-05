@@ -94,6 +94,16 @@ contract ComplianceGateway is IComplianceGateway {
         return _revoked[subject];
     }
 
+    function isCompliantWithTier(address subject, uint8 requiredTier) external view returns (bool) {
+        return _hasAttestation(subject) && !_revoked[subject] && !_isExpired(subject)
+               && _attestations[subject].tier >= requiredTier;
+    }
+
+    function getComplianceTier(address subject) external view returns (uint8) {
+        if (!_hasAttestation(subject) || _revoked[subject] || _isExpired(subject)) return 0;
+        return _attestations[subject].tier;
+    }
+
     // ── Cross-chain support ────────────────────────────────────────
 
     function setAuthorizedReceiver(
