@@ -165,6 +165,19 @@ revokeAttestation()      receiveRemoteRevocation()
 | CCIP Router | `0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59` | Chainlink official |
 | LINK Token | `0x779877A7B0D9E8603169DdbD7836e478b4624789` | Chainlink official |
 
+### Compliant Liquidity Pool — Sepolia (Chain ID 11155111)
+
+> Separate gateway instance — does not affect the existing Sepolia contracts above.
+
+| Contract | Address | Etherscan |
+|----------|---------|-----------|
+| Pool ComplianceGateway | `0xCEE67A28A6e552BEe87ac975Aad08122345FC510` | [View](https://sepolia.etherscan.io/address/0xCEE67A28A6e552BEe87ac975Aad08122345FC510) |
+| IUSD (Mock stablecoin, 6 dec) | `0x883Fe2CDf7fF5ef60a5fbae827C49B8814147E84` | [View](https://sepolia.etherscan.io/address/0x883Fe2CDf7fF5ef60a5fbae827C49B8814147E84) |
+| tTREAS (Mock T-bill token, 18 dec) | `0x53F89a4B9827ea21af9D08139CA8C9E0bA6F98a1` | [View](https://sepolia.etherscan.io/address/0x53F89a4B9827ea21af9D08139CA8C9E0bA6F98a1) |
+| CompliancePool Tier 1 (Basic) | `0x8D56d02Cbc58501A63DEBd700CcbBCdF97BdaE4D` | [View](https://sepolia.etherscan.io/address/0x8D56d02Cbc58501A63DEBd700CcbBCdF97BdaE4D) |
+| CompliancePool Tier 2 (Accredited) | `0xfF9d3665dabe84Ea67285802a4A234abea8B9806` | [View](https://sepolia.etherscan.io/address/0xfF9d3665dabe84Ea67285802a4A234abea8B9806) |
+| CompliancePool Tier 3 (Institutional) | `0xeCF174e463919cA04C199fBb0543675C83738128` | [View](https://sepolia.etherscan.io/address/0xeCF174e463919cA04C199fBb0543675C83738128) |
+
 ### Arbitrum Sepolia (Destination Chain · Chain ID 421614)
 
 | Contract | Address | Arbiscan |
@@ -186,6 +199,8 @@ The CRE Confidential HTTP enclave ensures compliance API credentials and all raw
 
 ### DeFi & Tokenization Track
 Compliant Bridge enables tokenized real-world assets to trade compliantly across chains. The `ComplianceToken._update()` hook enforces compliance on every transfer — both sender and receiver must hold valid attestations, and transfer amounts are capped by the attestation's `maxTransferValue`. A single CRE compliance check, bridged via CCIP, unlocks regulated trading on any supported chain without re-running compliance.
+
+The **Compliant Liquidity Pool (CLP)** extends this to DeFi primitives: three constant-product AMM pools (Tier 1 / 2 / 3) gated by an `onlyCompliant` modifier that checks `ComplianceGateway.isCompliantWithTier()` on every `swap()`, `addLiquidity()`, and `removeLiquidity()`. Non-compliant wallets are blocked at the smart contract level — not just the UI. This is the first institutional DeFi pool where access is controlled by on-chain privacy-preserving compliance attestations.
 
 ### Risk & Compliance Track
 The `AttestationInvalidator.invalidateAcrossChains()` function enables regulators to instantly propagate sanctions updates or KYC expirations across all chains simultaneously. A single transaction revokes an attestation locally and broadcasts CCIP revocation messages to every destination chain in one atomic operation. The `RegulatorView` contract provides jurisdiction-gated access to full compliance details including transfer history, tier breakdown, and attestation provenance.
@@ -255,11 +270,18 @@ cre workflow simulate ./compliance-check \
 ```bash
 cd frontend
 npm install
+
+# Required: set the deployer private key so the /api/attest relay can sign transactions
+cp .env.local.example .env.local
+# Edit .env.local and set ATTESTOR_PRIVATE_KEY=0xYOUR_DEPLOYER_PRIVATE_KEY
+
 npm run dev
 # Opens at http://localhost:3000
 ```
 
 The frontend connects to live contracts on Sepolia and Arb Sepolia automatically. Enable **Demo Mode** in the header for the step-by-step guided walkthrough.
+
+**Compliance relay (`/api/attest`):** Any visitor can click "Request Compliance Check" in the Institution or Compliant Pool tab. This calls the Next.js server-side API route, which uses the deployer key to call `attestCompliance()` on both gateways on behalf of the user's wallet. Tier 1 attestation is issued automatically — no manual deployer action needed.
 
 ### 5. Deploy contracts (optional — already deployed)
 
@@ -296,13 +318,15 @@ compliant-bridge/
 │
 ├── contracts/                       # Foundry project
 │   └── src/
-│       ├── ComplianceGateway.sol    # Core attestation store
+│       ├── ComplianceGateway.sol    # Core attestation store + tier queries
 │       ├── ComplianceToken.sol      # ERC-20 with compliance hooks
 │       ├── ComplianceConsumer.sol   # ← CRE report receiver
 │       ├── AttestationSender.sol    # ← CCIP sender
 │       ├── AttestationReceiver.sol  # ← CCIP receiver
 │       ├── AttestationInvalidator.sol # ← CCIP revocation broadcaster
 │       ├── RegulatorView.sol        # Regulator-gated data access
+│       ├── CompliancePool.sol       # Compliance-gated AMM (swap/liquidity)
+│       ├── MockERC20.sol            # Test tokens: IUSD + tTREAS
 │       └── ccip/                    # ← Chainlink CCIP interfaces
 │           ├── Client.sol
 │           ├── IRouterClient.sol
@@ -314,14 +338,18 @@ compliant-bridge/
 │       └── data/seed-data.ts        # Test wallet profiles
 │
 ├── frontend/                        # Next.js dashboard
-│   ├── app/page.tsx                 # Main page + demo mode
+│   ├── app/
+│   │   ├── page.tsx                 # Main page + demo mode + 4 tabs
+│   │   └── api/attest/route.ts      # ← Compliance relay: attests any wallet server-side
 │   ├── components/
-│   │   ├── tabs/                    # PublicTab, InstitutionTab, RegulatorTab
+│   │   ├── tabs/                    # PublicTab, InstitutionTab, RegulatorTab, PoolTab
 │   │   └── demo/                    # DemoPanel, FlowBar, SplitView, etc.
 │   ├── context/DemoContext.tsx      # Demo state management
 │   ├── lib/
-│   │   ├── contracts.ts             # ← CCIP addresses + all contract ABIs
+│   │   ├── contracts.ts             # ← CCIP addresses + all contract ABIs + POOL_ADDRESSES
+│   │   ├── useCompliancePool.ts     # ← Pool hooks: swap, liquidity, compliance, faucet
 │   │   └── demoScript.ts            # 6-step demo script
+│   ├── .env.local.example           # ATTESTOR_PRIVATE_KEY template
 │   └── deployments.json             # Live contract addresses + CCIP message IDs
 │
 └── docs/
@@ -338,6 +366,8 @@ compliant-bridge/
 | Cross-Chain | Chainlink CCIP · `IRouterClient` · `CCIPReceiver` |
 | Off-Chain Compliance | Chainlink CRE · `ConfidentialHTTPClient` · `EVMClient` |
 | Secrets | Chainlink Vault DON · threshold encryption |
+| Compliance-Gated AMM | `CompliancePool.sol` · constant-product AMM · `onlyCompliant` modifier |
+| Compliance Relay | Next.js API route (`/api/attest`) · server-side attestation for any wallet |
 | Mock APIs | Node.js · Express · TypeScript |
 | Frontend | Next.js 15 · Tailwind CSS v4 · ethers.js v6 |
 | Testnets | Sepolia (source) · Arbitrum Sepolia (destination) |
