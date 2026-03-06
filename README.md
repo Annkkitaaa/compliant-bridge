@@ -32,32 +32,32 @@ When compliance status changes — a sanctions update, a KYC expiry, a regulator
 User initiates transfer on Sepolia
               │
               ▼
-┌─────────────────────────────────────────────────────┐
-│              CRE Workflow (DON)                      │
-│                                                     │
-│  ┌─────────────────────────────────────────────┐   │
-│  │           Vault DON Secrets                  │   │
-│  │   complianceApiKey (threshold-encrypted)     │   │
-│  │   encryptionKey    (threshold-encrypted)     │   │
-│  └──────────────────┬──────────────────────────┘   │
-│                     │ injected via Go template      │
-│                     ▼                               │
-│  ┌─────────────────────────────────────────────┐   │
-│  │       ConfidentialHTTP Enclave               │   │
-│  │   POST /sanctions-check  (x-api-key: ***)    │   │
-│  │   POST /kyc-status       (x-api-key: ***)    │   │  ← API key NEVER in node memory
-│  │   POST /accredited-investor                  │   │  ← Response stays in enclave
-│  │   POST /jurisdiction-check                   │   │  ← Optional AES-GCM encryption
-│  └──────────────────┬──────────────────────────┘   │
+┌───────────────────────────────────────────────────────┐
+│              CRE Workflow (DON)                       │
+│                                                       │
+│  ┌───────────────────────────────────────────────┐    │
+│  │           Vault DON Secrets                   │    │
+│  │   complianceApiKey (threshold-encrypted)      │    │
+│  │   encryptionKey    (threshold-encrypted)      │    │
+│  └──────────────────┬────────────────────────────┘    │
+│                     │ injected via Go template        │
+│                     ▼                                 │
+│  ┌───────────────────────────────────────────────┐   │
+│  │       ConfidentialHTTP Enclave                │   │
+│  │   POST /sanctions-check  (x-api-key: ***)     │   │
+│  │   POST /kyc-status       (x-api-key: ***)     │   │  ← API key NEVER in node memory
+│  │   POST /accredited-investor                   │   │  ← Response stays in enclave
+│  │   POST /jurisdiction-check                    │   │  ← Optional AES-GCM encryption
+│  └──────────────────┬────────────────────────────┘   │
 │                     │ off-chain decision             │
 │                     ▼                               │
-│  ┌─────────────────────────────────────────────┐   │
-│  │       Compliance Decision (off-chain)        │   │
-│  │   tier=1/2/3 · maxTransferValue · expiry     │   │  ← ONLY these 4 values
-│  │   checkId                                    │   │     reach the blockchain
-│  └──────────────────┬──────────────────────────┘   │
+│  ┌───────────────────────────────────────────────┐   │
+│  │       Compliance Decision (off-chain)         │   │
+│  │   tier=1/2/3 · maxTransferValue · expiry      │   │  ← ONLY these 4 values
+│  │   checkId                                     │   │     reach the blockchain
+│  └──────────────────┬────────────────────────────┘   │
 │                     │ DON-signed report              │
-└─────────────────────┼───────────────────────────────┘
+└─────────────────────┼─────────────────────────────────┘
                       │
                       ▼
          ComplianceConsumer.onReport()
