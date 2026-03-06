@@ -32,55 +32,55 @@ When compliance status changes — a sanctions update, a KYC expiry, a regulator
 User initiates transfer on Sepolia
               │
               ▼
-┌───────────────────────────────────────────────────────┐
-│              CRE Workflow (DON)                       │
-│                                                       │
-│  ┌───────────────────────────────────────────────┐    │
-│  │           Vault DON Secrets                   │    │
-│  │   complianceApiKey (threshold-encrypted)      │    │
-│  │   encryptionKey    (threshold-encrypted)      │    │
-│  └──────────────────┬────────────────────────────┘    │
-│                     │ injected via Go template        │
-│                     ▼                                 │
-│  ┌───────────────────────────────────────────────┐   │
-│  │       ConfidentialHTTP Enclave                │   │
-│  │   POST /sanctions-check  (x-api-key: ***)     │   │
-│  │   POST /kyc-status       (x-api-key: ***)     │   │  ← API key NEVER in node memory
-│  │   POST /accredited-investor                   │   │  ← Response stays in enclave
-│  │   POST /jurisdiction-check                    │   │  ← Optional AES-GCM encryption
-│  └──────────────────┬────────────────────────────┘   │
-│                     │ off-chain decision             │
-│                     ▼                               │
-│  ┌───────────────────────────────────────────────┐   │
-│  │       Compliance Decision (off-chain)         │   │
-│  │   tier=1/2/3 · maxTransferValue · expiry      │   │  ← ONLY these 4 values
-│  │   checkId                                     │   │     reach the blockchain
-│  └──────────────────┬────────────────────────────┘   │
-│                     │ DON-signed report              │
-└─────────────────────┼─────────────────────────────────┘
-                      │
-                      ▼
-         ComplianceConsumer.onReport()
-                      │
-                      ▼
-         ComplianceGateway.attestCompliance()
-           (Sepolia · source chain)
-                      │
-          ┌───────────┴───────────┐
-          │  AttestationSender    │
-          │  router.ccipSend()    │
-          └───────────┬───────────┘
-                      │  CCIP Message (Chainlink)
-                      │  messageId: 0xa483...aa0
-                      ▼
-         AttestationReceiver._ccipReceive()
-                      │
-                      ▼
-         ComplianceGateway.receiveRemoteAttestation()
-           (Arb Sepolia · destination chain)
-                      │
-                      ▼
-         ComplianceToken._update() → isCompliant() ✅
+┌─────────────────────────────────────────────────────────┐
+│                CRE Workflow (DON)                       │
+│                                                         │
+│    ┌───────────────────────────────────────────────┐    │
+│    │           Vault DON Secrets                   │    │
+│    │   complianceApiKey (threshold-encrypted)      │    │
+│    │   encryptionKey    (threshold-encrypted)      │    │
+│    └──────────────────┬────────────────────────────┘    │
+│                       │ injected via Go template        │
+│                       ▼                                 │
+│    ┌───────────────────────────────────────────────┐    │
+│    │       ConfidentialHTTP Enclave                │    │
+│    │   POST /sanctions-check  (x-api-key: ***)     │    │
+│    │   POST /kyc-status       (x-api-key: ***)     │    │  ← API key NEVER in node memory
+│    │   POST /accredited-investor                   │    │  ← Response stays in enclave
+│    │   POST /jurisdiction-check                    │    │  ← Optional AES-GCM encryption
+│    └──────────────────┬────────────────────────────┘    │
+│                       │ off-chain decision              │
+│                       ▼                                 │
+│    ┌───────────────────────────────────────────────┐    │
+│    │       Compliance Decision (off-chain)         │    │
+│    │   tier=1/2/3 · maxTransferValue · expiry      │    │  ← ONLY these 4 values
+│    │   checkId                                     │    │     reach the blockchain
+│    └──────────────────┬────────────────────────────┘    │
+│                       │ DON-signed report               │
+└───────────────────────┼─────────────────────────────────┘
+                        │
+                        ▼
+           ComplianceConsumer.onReport()
+                        │
+                        ▼
+           ComplianceGateway.attestCompliance()
+             (Sepolia · source chain)
+                        │
+            ┌───────────┴───────────┐
+            │  AttestationSender    │
+            │  router.ccipSend()    │
+            └───────────┬───────────┘
+                        │  CCIP Message (Chainlink)
+                        │  messageId: 0xa483...aa0
+                        ▼
+           AttestationReceiver._ccipReceive()
+                        │
+                        ▼
+           ComplianceGateway.receiveRemoteAttestation()
+             (Arb Sepolia · destination chain)
+                        │
+                        ▼
+           ComplianceToken._update() → isCompliant() ✅
 ```
 
 **Revocation flow** (when sanctions list updates):
