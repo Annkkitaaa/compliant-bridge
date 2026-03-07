@@ -15,7 +15,6 @@ import {
   type TxStatus,
 } from "@/lib/useCompliancePool";
 import { ToastContainer, ToastData, toastId } from "@/components/Toast";
-import DemoAnnotation from "@/components/demo/DemoAnnotation";
 import {
   Wallet, Waves, ArrowRightLeft, Plus, Minus,
   Lock, ChevronDown, RefreshCw, Droplets, Activity, ShieldCheck,
@@ -150,8 +149,6 @@ export default function PoolTab() {
   return (
     <div className="space-y-6">
       <ToastContainer toasts={toasts} onDismiss={id => setToasts(p => p.filter(t => t.id !== id))} />
-      <DemoAnnotation forTab="pool" />
-
       {/* Not yet deployed banner */}
       {!contracted && (
         <div className="rounded-xl p-4 text-sm text-[#F5AC37]"

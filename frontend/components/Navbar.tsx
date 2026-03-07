@@ -1,21 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Shield, Play, Square } from "lucide-react";
-import { useDemoContext } from "@/context/DemoContext";
+import { Shield } from "lucide-react";
 
 export default function Navbar() {
-  const { demoMode, toggleDemo } = useDemoContext();
   const [scrolled, setScrolled] = useState(false);
-
-  function handleDemoClick() {
-    toggleDemo();
-    if (!demoMode) {
-      setTimeout(() => {
-        const el = document.getElementById('app');
-        if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72 });
-      }, 50);
-    }
-  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -58,33 +46,17 @@ export default function Navbar() {
             </span>
           </div>
 
-          {/* Right cluster */}
-          <div className="flex items-center gap-3">
-            {/* Powered by Chainlink badge */}
-            <div
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold"
-              style={{
-                background: "rgba(55,91,210,0.1)",
-                border: "1px solid rgba(55,91,210,0.25)",
-                color: "#8892A4",
-              }}
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-[#375BD2]" />
-              Powered by Chainlink
-            </div>
-
-            {/* Demo toggle */}
-            <button
-              onClick={handleDemoClick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all duration-200 ${
-                demoMode
-                  ? "bg-[#F5AC37] border-[#F5AC37] text-black shadow-[0_0_16px_rgba(245,172,55,0.4)]"
-                  : "bg-transparent border-[#1F2235] text-[#8892A4] hover:border-[#375BD2] hover:text-white"
-              }`}
-            >
-              {demoMode ? <Square className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-              {demoMode ? "Exit Demo" : "Demo Mode"}
-            </button>
+          {/* Powered by Chainlink badge */}
+          <div
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold"
+            style={{
+              background: "rgba(55,91,210,0.1)",
+              border: "1px solid rgba(55,91,210,0.25)",
+              color: "#8892A4",
+            }}
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-[#375BD2]" />
+            Powered by Chainlink
           </div>
         </div>
       </div>

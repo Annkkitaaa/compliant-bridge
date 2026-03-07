@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ExternalLink } from "lucide-react";
-import { useDemoContext } from "@/context/DemoContext";
+import { useEffect, useState } from "react";
+import { ArrowDown } from "lucide-react";
 import { getReadProvider } from "@/lib/contracts";
 import { ADDRESSES } from "@/lib/contracts";
 import { ethers } from "ethers";
@@ -45,9 +44,7 @@ function useLiveStats() {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Hero() {
-  const { toggleDemo } = useDemoContext();
   const stats = useLiveStats();
-  const orbRef = useRef<HTMLDivElement>(null);
 
   function scrollToApp() {
     document.getElementById("app")?.scrollIntoView({ behavior: "smooth" });
@@ -59,7 +56,7 @@ export default function Hero() {
       style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(55,91,210,0.18) 0%, #0D0E12 60%)" }}
     >
       {/* Animated background orbs */}
-      <div ref={orbRef} className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         {/* Orb 1 — big blue */}
         <div
           className="absolute animate-orb-1"
@@ -138,34 +135,14 @@ export default function Hero() {
           bridged via CCIP. Compliance verified once — enforced everywhere.
         </p>
 
-        {/* CTAs */}
-        <div className="animate-fade-up-3 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+        {/* CTA */}
+        <div className="animate-fade-up-3 flex items-center justify-center mb-16">
           <button
             onClick={scrollToApp}
             className="btn-blue flex items-center gap-2.5 px-8 py-3.5 text-[15px] font-semibold rounded-xl shadow-[0_4px_32px_rgba(55,91,210,0.4)]"
           >
             Launch App
             <ArrowDown className="w-4 h-4" />
-          </button>
-          <button
-            onClick={toggleDemo}
-            className="flex items-center gap-2.5 px-8 py-3.5 text-[15px] font-semibold rounded-xl transition-all duration-200"
-            style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              color: "white",
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(55,91,210,0.5)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(55,91,210,0.08)";
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.05)";
-            }}
-          >
-            Watch Demo
-            <ExternalLink className="w-4 h-4 text-[#8892A4]" />
           </button>
         </div>
 

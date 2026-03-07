@@ -9,7 +9,6 @@ import { MOCK_TRANSFERS } from "@/lib/mockData";
 import {
   ADDRESSES, TOKEN_ABI, GATEWAY_ABI, getReadProvider, shortAddr,
 } from "@/lib/contracts";
-import DemoAnnotation from "@/components/demo/DemoAnnotation";
 import { Shield, Lock, Eye, EyeOff, Activity, RefreshCw } from "lucide-react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -133,8 +132,6 @@ export default function PublicTab() {
 
   return (
     <div className="fade-in space-y-5">
-      <DemoAnnotation forTab="public" />
-
       {/* Privacy banner */}
       <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #1F2235" }}>
         <div className="px-6 py-4 flex items-center justify-between"
