@@ -84,7 +84,7 @@ export function usePoolInfo(poolAddress: string) {
       const pool = new ethers.Contract(poolAddress, COMPLIANCE_POOL_ABI, provider);
       const [gw, tA, tB, rt, rA, rB, ts] = await pool.getPoolInfo();
       const tvl = rA > 0n
-        ? `${Number(rA / BigInt(1e6)).toLocaleString()} IUSD + ${Number(rA / BigInt(1e18)).toLocaleString()} tTREAS`
+        ? `${Number(rA / BigInt(1e6)).toLocaleString()} IUSD + ${Number(rB / BigInt(1e18)).toLocaleString()} tTREAS`
         : "No liquidity yet";
       setInfo({ gateway: gw, tokenA: tA, tokenB: tB, requiredTier: Number(rt), reserveA: rA, reserveB: rB, totalSupply: ts, tvlDisplay: tvl });
     } catch { setInfo(null); }

@@ -101,7 +101,7 @@ export default function PublicTab() {
     MOCK_TRANSFERS.map(t => ({ ...t, chain: t.chain as ChainLabel }))
   );
   const [loading,     setLoading]     = useState(false);
-  const [chainStatus, setChainStatus] = useState<"live" | "fallback" | "loading">("loading");
+  const [chainStatus, setChainStatus] = useState<"live" | "live_empty" | "fallback" | "loading">("loading");
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -116,7 +116,8 @@ export default function PublicTab() {
         setTransfers(all.slice(0, 20));
         setChainStatus("live");
       } else {
-        setChainStatus("fallback");
+        // RPC connected but no recent token transfers — show live indicator with example data
+        setChainStatus("live_empty");
       }
     } catch {
       setChainStatus("fallback");
@@ -210,7 +211,13 @@ export default function PublicTab() {
                 Live · Sepolia + Arb Sepolia
               </span>
             )}
-            {chainStatus === "fallback" && <span className="text-xs text-[#4A5568] italic">No on-chain data</span>}
+            {chainStatus === "live_empty" && (
+              <span className="flex items-center gap-1.5 text-xs font-medium text-[#16C784]">
+                <span className="w-2 h-2 rounded-full bg-[#16C784] pulse inline-block" />
+                Live · No recent transfers
+              </span>
+            )}
+            {chainStatus === "fallback" && <span className="text-xs text-[#4A5568] italic">Example data</span>}
             {chainStatus === "loading" && <span className="text-xs text-[#4A5568]">Fetching…</span>}
             <button
               onClick={refresh} disabled={loading}
