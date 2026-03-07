@@ -206,7 +206,7 @@ export default function RegulatorTab() {
           transfers: [], tier: mock.tier, jurisdiction: mock.jurisdiction,
           maxTransfer: mock.maxTransfer, issuedAt: mock.issuedAt, validUntil: mock.validUntil, status: mock.status,
         });
-        addToast({ type: "info", title: "Using demo data", message: "Could not reach Sepolia RPC" });
+        addToast({ type: "info", title: "Using sample data", message: "Could not reach Sepolia RPC — showing example records." });
       } else {
         setError(msg.slice(0, 160));
       }
@@ -243,9 +243,8 @@ export default function RegulatorTab() {
       if (msg.includes("user rejected") || msg.includes("User denied")) {
         addToast({ type: "info", title: "Cancelled" });
       } else if (msg.includes("OnlyAuthorized") || msg.includes("Unauthorized") || msg.includes("OnlyOwner")) {
-        addToast({ type: "info", title: "Demo mode", message: "Bob was already revoked via CCIP in our demo run." });
-        setRevoked(true);
-        setSubject(prev => prev ? { ...prev, status: "revoked", revoked: true } : prev);
+        addToast({ type: "info", title: "Not authorized", message: "Only the contract owner can broadcast cross-chain revocations." });
+        setRevoked(false);
       } else {
         addToast({ type: "error", title: "Revocation failed", message: msg.slice(0, 120) });
       }

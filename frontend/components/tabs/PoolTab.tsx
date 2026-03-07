@@ -444,7 +444,7 @@ export default function PoolTab() {
                   ? "Select a pool above to view its compliance log."
                   : "No events in the last 1000 blocks."}
               </p>
-              {/* Static mock events for demo / pre-deployment */}
+              {/* Static preview events shown before pool contracts are deployed */}
               {!contracted && (
                 <div className="mt-4 space-y-2">
                   {[

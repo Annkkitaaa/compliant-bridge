@@ -101,7 +101,7 @@ export default function PublicTab() {
     MOCK_TRANSFERS.map(t => ({ ...t, chain: t.chain as ChainLabel }))
   );
   const [loading,     setLoading]     = useState(false);
-  const [chainStatus, setChainStatus] = useState<"live" | "demo" | "loading">("loading");
+  const [chainStatus, setChainStatus] = useState<"live" | "fallback" | "loading">("loading");
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -116,10 +116,10 @@ export default function PublicTab() {
         setTransfers(all.slice(0, 20));
         setChainStatus("live");
       } else {
-        setChainStatus("demo");
+        setChainStatus("fallback");
       }
     } catch {
-      setChainStatus("demo");
+      setChainStatus("fallback");
     } finally {
       setLoading(false);
     }
@@ -210,7 +210,7 @@ export default function PublicTab() {
                 Live · Sepolia + Arb Sepolia
               </span>
             )}
-            {chainStatus === "demo"    && <span className="text-xs text-[#4A5568] italic">Demo data</span>}
+            {chainStatus === "fallback" && <span className="text-xs text-[#4A5568] italic">No on-chain data</span>}
             {chainStatus === "loading" && <span className="text-xs text-[#4A5568]">Fetching…</span>}
             <button
               onClick={refresh} disabled={loading}

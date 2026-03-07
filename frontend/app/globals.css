@@ -109,34 +109,11 @@ tbody tr:last-child { border-bottom: none; }
 }
 .fade-in { animation: fadeIn 0.28s ease forwards; }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.slide-up { animation: slideUp 0.3s ease forwards; }
-
-@keyframes annotationIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.demo-annotation-enter { animation: annotationIn 0.25s ease forwards; }
-
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.3; }
 }
 .pulse { animation: pulse-dot 2s infinite; }
-
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px var(--blue-glow), 0 0 60px rgba(55,91,210,0.15);
-    opacity: 0.7;
-  }
-  50% {
-    box-shadow: 0 0 40px var(--blue-glow), 0 0 100px rgba(55,91,210,0.25);
-    opacity: 1;
-  }
-}
 
 @keyframes orb-drift {
   0%   { transform: translate(0, 0) scale(1); }
@@ -168,14 +145,6 @@ tbody tr:last-child { border-bottom: none; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes flow-line {
-  0%   { transform: translateX(-100%); opacity: 0; }
-  20%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
-}
-
-.animate-glow-pulse  { animation: glow-pulse 3s ease-in-out infinite; }
 .animate-orb-1       { animation: orb-drift   18s ease-in-out infinite; }
 .animate-orb-2       { animation: orb-drift-2 22s ease-in-out infinite; }
 .animate-orb-3       { animation: orb-drift   26s ease-in-out infinite reverse; }
@@ -196,23 +165,6 @@ tbody tr:last-child { border-bottom: none; }
   background-clip: text;
   animation: shimmer 4s linear infinite;
 }
-
-/* ── Glow border ─────────────────────────────────────────────────────────────── */
-
-.glow-border {
-  position: relative;
-}
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, var(--blue), var(--violet), var(--blue));
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: -1;
-}
-.glow-border:hover::before { opacity: 1; }
 
 /* ── Blue button ─────────────────────────────────────────────────────────────── */
 

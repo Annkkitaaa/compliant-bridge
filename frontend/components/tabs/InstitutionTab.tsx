@@ -190,7 +190,7 @@ export default function InstitutionTab() {
       if (msg.includes("user rejected") || msg.includes("User denied")) {
         addToast({ type: "info", title: "Transaction cancelled" });
       } else if (msg.includes("OnlyAuthorized") || msg.includes("Unauthorized")) {
-        addToast({ type: "info", title: "Demo mode", message: "Attestation already bridged via CCIP in our demo run." });
+        addToast({ type: "info", title: "Already bridged", message: "This attestation has already been sent via CCIP to Arbitrum Sepolia." });
         setBridged(true);
         setBridgeTx(ADDRESSES.sepolia.sender);
       } else {

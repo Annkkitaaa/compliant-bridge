@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "e2e-tests-studio": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "b436a0731e76be7b23e7d3b32b530f1b546c6d39a7e6c916c37123a82daa658f"
+    },
+    "mastra-docs": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "85ee219e5216293dc7ede6bbae9944a3754aefed74960d2cb7b18216b85ce038"
+    },
+    "ralph-plan": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "723b8dbda242d8c1bbd8024cb93a140957202a44b0bf1a729b6dcc761040bfb4"
+    },
+    "react-best-practices": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "fdb5418e4b42cb767f012fc5590003977b29740df728fd7f2d845a2485ab5238"
+    },
+    "smoke-test": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "ef98b0c2857d3d86bdd9c68f3c78b3cc819ce3799cf89cad31045205f05112b0"
+    },
+    "tailwind-best-practices": {
+      "source": "mastra-ai/mastra",
+      "sourceType": "github",
+      "computedHash": "b5720fe165b13c35122f15fa78cea523e9dda48e666fcc71daf1ba71827f0386"
+    }
+  }
+}
