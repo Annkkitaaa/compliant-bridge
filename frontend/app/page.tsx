@@ -46,7 +46,7 @@ export default function Home() {
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-3">
-              Three Views. One System.
+              Four Views. One System.
             </h2>
             <p className="text-[#8892A4] max-w-lg mx-auto text-[15px]">
               Same blockchain data, different access levels — enforced by smart contracts and Chainlink CRE.

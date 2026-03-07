@@ -279,7 +279,7 @@ npm run dev
 # Opens at http://localhost:3000
 ```
 
-The frontend connects to live contracts on Sepolia and Arb Sepolia automatically. Enable **Demo Mode** in the header for the step-by-step guided walkthrough.
+The frontend connects to live contracts on Sepolia and Arb Sepolia automatically. Open the app and explore the four tabs: **Public**, **Institution**, **Regulator**, and **Compliant Pool**.
 
 **Compliance relay (`/api/attest`):** Any visitor can click "Request Compliance Check" in the Institution or Compliant Pool tab. This calls the Next.js server-side API route, which uses the deployer key to call `attestCompliance()` on both gateways on behalf of the user's wallet. Tier 1 attestation is issued automatically — no manual deployer action needed.
 
@@ -339,7 +339,7 @@ compliant-bridge/
 │
 ├── frontend/                        # Next.js dashboard
 │   ├── app/
-│   │   ├── page.tsx                 # Main page + demo mode + 4 tabs
+│   │   ├── page.tsx                 # Main page + 4 tabs (Public/Institution/Regulator/Pool)
 │   │   └── api/attest/route.ts      # ← Compliance relay: attests any wallet server-side
 │   ├── components/
 │   │   ├── tabs/                    # PublicTab, InstitutionTab, RegulatorTab, PoolTab
