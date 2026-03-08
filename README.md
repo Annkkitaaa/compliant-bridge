@@ -2,7 +2,7 @@
 
 ## Privacy-Preserving Cross-Chain Compliance for Tokenized Assets
 
-> Built for the **Chainlink Convergence Hackathon** · [Live Demo](http://localhost:3000) · [Track CCIP Messages](https://ccip.chain.link)
+> Built for the **Chainlink Convergence Hackathon** · [GitHub](https://github.com/Annkkitaaa/compliant-bridge) · [Track CCIP Messages](https://ccip.chain.link)
 
 ---
 
@@ -213,11 +213,11 @@ The `AttestationInvalidator.invalidateAcrossChains()` function enables regulator
 
 The demo shows the complete compliance lifecycle in 3-5 minutes:
 1. **CRE Check** — CRE workflow running Confidential HTTP calls; attestation written on-chain
-2. **Attestation** — Institution wallet's compliance details in the dashboard
+2. **Attestation** — Institution wallet's compliance details in the Institution tab
 3. **CCIP Bridge** — Bridging the attestation from Sepolia to Arb Sepolia
 4. **Destination** — Attestation arriving on Arb Sepolia; token transfer unlocked
-5. **Revocation** — Regulator invalidates across both chains simultaneously
-6. **Split View** — Same transaction seen through Public / Institution / Regulator lenses
+5. **Revocation** — Regulator tab: invalidating across both chains simultaneously
+6. **Four Views** — Same compliance data seen through Public / Institution / Regulator / Compliant Pool lenses
 
 ---
 
@@ -233,7 +233,7 @@ The demo shows the complete compliance lifecycle in 3-5 minutes:
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-repo/compliant-bridge
+git clone https://github.com/Annkkitaaa/compliant-bridge
 cd compliant-bridge
 ```
 
