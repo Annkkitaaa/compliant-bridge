@@ -209,7 +209,7 @@ The `AttestationInvalidator.invalidateAcrossChains()` function enables regulator
 
 ## Demo Video
 
-> [Add link after recording]
+> [Watch Demo on YouTube](https://youtu.be/6Dpsga9P-tQ?si=F8Y4riRZe84uKkcB)
 
 The demo shows the complete compliance lifecycle in 3-5 minutes:
 1. **CRE Check** — CRE workflow running Confidential HTTP calls; attestation written on-chain
