@@ -49,6 +49,7 @@ function TierBadge({ tier }: { tier: number }) {
 
 export default function InstitutionTab() {
   const [connected,  setConnected]  = useState(false);
+  const [readOnly,   setReadOnly]   = useState(false);   // true when viewing without MetaMask
   const [address,    setAddress]    = useState<string>("");
   const [wrongChain, setWrongChain] = useState(false);
 
@@ -122,8 +123,18 @@ export default function InstitutionTab() {
         const arbGateway = new ethers.Contract(ADDRESSES.arbSepolia.gateway, GATEWAY_ABI, arbProvider);
         const attArb     = await arbGateway.getAttestation(addr);
         setIsRemote(attArb.validUntil > 0n);
-        if (attArb.validUntil > 0n) setBridged(true);
-      } catch { /* Arb Sepolia unavailable */ }
+        if (attArb.validUntil > 0n) {
+          setBridged(true);
+        } else {
+          // RPC worked but attestation not on Arb yet — check if we previously sent the bridge tx
+          const savedTx = typeof window !== "undefined" ? localStorage.getItem(`bridged_${addr.toLowerCase()}`) : null;
+          if (savedTx) { setBridged(true); setBridgeTx(savedTx); }
+        }
+      } catch {
+        // Arb Sepolia RPC unavailable — restore bridged state from localStorage
+        const savedTx = typeof window !== "undefined" ? localStorage.getItem(`bridged_${addr.toLowerCase()}`) : null;
+        if (savedTx) { setBridged(true); setBridgeTx(savedTx); }
+      }
     } catch (err: unknown) {
       const msg = (err as Error).message ?? "Failed to load attestation";
       setAttError(msg.length > 120 ? msg.slice(0, 120) + "…" : msg);
@@ -184,6 +195,7 @@ export default function InstitutionTab() {
       await tx.wait();
       setBridgeTx(tx.hash);
       setBridged(true);
+      localStorage.setItem(`bridged_${address.toLowerCase()}`, tx.hash);
       addToast({ type: "success", title: "Attestation bridged!", message: "Delivered to Arbitrum Sepolia via CCIP" });
     } catch (err: unknown) {
       const msg = (err as Error).message ?? "";
@@ -193,6 +205,7 @@ export default function InstitutionTab() {
         addToast({ type: "info", title: "Already bridged", message: "This attestation has already been sent via CCIP to Arbitrum Sepolia." });
         setBridged(true);
         setBridgeTx(ADDRESSES.sepolia.sender);
+        localStorage.setItem(`bridged_${address.toLowerCase()}`, ADDRESSES.sepolia.sender);
       } else {
         addToast({ type: "error", title: "Bridge failed", message: msg.slice(0, 120) });
       }
@@ -232,21 +245,42 @@ export default function InstitutionTab() {
   const surface = { background: "#13151A", border: "1px solid #1F2235" };
   const surfaceHover = "hover:bg-[#181A22]";
 
+  // ── View-only mode (no wallet) ──────────────────────────────────────────
+
+  const [viewAddr, setViewAddr] = useState("");
+
+  async function handleViewAddress(addr: string) {
+    // Accept any 40-hex address regardless of checksum casing
+    if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) {
+      addToast({ type: "error", title: "Invalid address", message: "Enter a valid 0x… Ethereum address" });
+      return;
+    }
+    setAddress(addr);
+    setConnected(true);
+    setReadOnly(true);
+    await loadData(addr);
+  }
+
   // ── Not connected ─────────────────────────────────────────────────────────
+
+  const DEMO_ADDRESSES = [
+    { label: "Alice", addr: "0xaa00000000000000000000000000000000000001", sub: "Tier 2 · US/NY" },
+    { label: "Bob",   addr: "0xaa00000000000000000000000000000000000002", sub: "REVOKED · Tier 3" },
+  ];
 
   if (!connected) {
     return (
-      <div className="fade-in flex flex-col items-center justify-center min-h-[480px] gap-6">
+      <div className="fade-in flex flex-col items-center justify-center min-h-[480px] gap-4">
         <ToastContainer toasts={toasts} onDismiss={dismissToast} />
-        <div className="rounded-2xl p-10 text-center max-w-md w-full" style={surface}>
+        <div className="rounded-2xl p-8 text-center max-w-md w-full" style={surface}>
           <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
             style={{ background: "rgba(55,91,210,0.15)", border: "1px solid rgba(55,91,210,0.3)" }}
           >
             <Wallet className="w-8 h-8 text-[#375BD2]" />
           </div>
           <h3 className="text-xl font-bold text-white mb-2">Institution Portal</h3>
-          <p className="text-[#8892A4] text-sm mb-6">
-            Connect your wallet to view your compliance attestation, token balances, and cross-chain status.
+          <p className="text-[#8892A4] text-sm mb-5">
+            Connect your wallet — or view any address directly without MetaMask.
           </p>
           {wrongChain && (
             <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 mb-4 text-left"
@@ -258,14 +292,53 @@ export default function InstitutionTab() {
           )}
           <button
             onClick={handleConnect}
-            className="btn-blue w-full py-3 px-6 flex items-center justify-center gap-2 text-[15px]"
+            className="btn-blue w-full py-3 px-6 flex items-center justify-center gap-2 text-[15px] mb-4"
           >
             <Wallet className="w-4 h-4" />
             Connect Wallet
           </button>
-          <p className="text-xs text-[#4A5568] mt-4">
-            Try with address <span className="mono text-[#8892A4]">0xAA00…0001</span> (Alice · Tier 2 · US/NY)
-          </p>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1 h-px" style={{ background: "#1F2235" }} />
+            <span className="text-xs text-[#4A5568]">or view read-only</span>
+            <div className="flex-1 h-px" style={{ background: "#1F2235" }} />
+          </div>
+
+          {/* Quick-pick demo addresses */}
+          <div className="flex gap-2 mb-3">
+            {DEMO_ADDRESSES.map(({ label, addr, sub }) => (
+              <button key={addr} onClick={() => handleViewAddress(addr)}
+                className="flex-1 py-2 px-3 rounded-xl text-left transition-all"
+                style={{ background: "#181A22", border: "1px solid #252840" }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = "#375BD2")}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = "#252840")}
+              >
+                <p className="text-sm font-semibold text-white">{label}</p>
+                <p className="text-xs text-[#4A5568]">{sub}</p>
+              </button>
+            ))}
+          </div>
+
+          {/* Manual address input */}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={viewAddr}
+              onChange={e => setViewAddr(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleViewAddress(viewAddr)}
+              placeholder="0x… any address"
+              className="flex-1 px-3 py-2 rounded-xl text-sm text-white placeholder-[#4A5568] outline-none"
+              style={{ background: "#181A22", border: "1px solid #252840" }}
+            />
+            <button
+              onClick={() => handleViewAddress(viewAddr)}
+              className="px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+              style={{ background: "#375BD2" }}
+            >
+              View
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -291,7 +364,7 @@ export default function InstitutionTab() {
                 {address.toLowerCase() === "0xaa00000000000000000000000000000000000001" ? "(Alice)" : ""}
               </span>
             </p>
-            <p className="text-xs text-[#8892A4]">Connected · Sepolia</p>
+            <p className="text-xs text-[#8892A4]">{readOnly ? "Read-only · Sepolia" : "Connected · Sepolia"}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -341,7 +414,7 @@ export default function InstitutionTab() {
               : <><ShieldCheck className="w-4 h-4" /> Request Compliance Check</>}
           </button>
           <p className="text-xs text-[#4A5568] text-center mt-2">
-            Attests your wallet at Tier 1 (Basic) on Sepolia — valid for 1 year.
+            {readOnly ? "Issues a Tier 1 attestation for this address on Sepolia." : "Attests your wallet at Tier 1 (Basic) on Sepolia — valid for 1 year."}
           </p>
         </div>
       )}
@@ -464,7 +537,7 @@ export default function InstitutionTab() {
               </button>
               <button
                 onClick={handleBridge}
-                disabled={bridging || bridged || isRevoked}
+                disabled={bridging || bridged || isRevoked || readOnly}
                 className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
                 style={bridged
                   ? { background: "rgba(22,199,132,0.1)", border: "1px solid rgba(22,199,132,0.3)", color: "#16C784" }
@@ -481,6 +554,21 @@ export default function InstitutionTab() {
                 </div>
                 {!bridged && <ChevronRight className="w-4 h-4 opacity-40" />}
               </button>
+              {/* Renew attestation — always available so user can refresh compliance */}
+              {!readOnly && (
+                <button
+                  onClick={handleRequestAttestation}
+                  disabled={attesting}
+                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 disabled:opacity-60"
+                  style={{ background: "#181A22", border: "1px solid #252840", color: "#8892A4" }}
+                >
+                  <div className="flex items-center gap-2">
+                    {attesting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+                    {attesting ? "Renewing…" : "Renew Attestation"}
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-40" />
+                </button>
+              )}
             </div>
           </div>
         </div>

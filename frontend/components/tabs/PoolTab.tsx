@@ -442,7 +442,7 @@ export default function PoolTab() {
                   ? "Select a pool to view live events once contracts are deployed."
                   : !selectedTier
                   ? "Select a pool above to view its compliance log."
-                  : "No events in the last 1000 blocks."}
+                  : "No events in the last 50,000 blocks."}
               </p>
               {/* Static preview events shown before pool contracts are deployed */}
               {!contracted && (

@@ -39,7 +39,7 @@ interface SubjectData {
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function formatDate(d: Date) {
-  return d.toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
 function short(addr: string) { return shortAddr(addr, 8, 6); }

@@ -218,7 +218,7 @@ export function usePoolEvents(poolAddress: string) {
         const provider = getReadProvider("sepolia");
         const pool = new ethers.Contract(poolAddress, COMPLIANCE_POOL_ABI, provider);
         const latestBlock = await provider.getBlockNumber();
-        const fromBlock = Math.max(0, latestBlock - 1000);
+        const fromBlock = Math.max(0, latestBlock - 50000);
 
         const [added, removed, swapped, blocked] = await Promise.all([
           pool.queryFilter(pool.filters.LiquidityAdded(),   fromBlock),
