@@ -2,8 +2,6 @@
 
 ## Privacy-Preserving Cross-Chain Compliance for Tokenized Assets
 
-> Built for the **Chainlink Convergence Hackathon** · [GitHub](https://github.com/Annkkitaaa/compliant-bridge) · [Track CCIP Messages](https://ccip.chain.link)
-
 ---
 
 ## The Problem
@@ -204,20 +202,6 @@ The **Compliant Liquidity Pool (CLP)** extends this to DeFi primitives: three co
 
 ### Risk & Compliance Track
 The `AttestationInvalidator.invalidateAcrossChains()` function enables regulators to instantly propagate sanctions updates or KYC expirations across all chains simultaneously. A single transaction revokes an attestation locally and broadcasts CCIP revocation messages to every destination chain in one atomic operation. The `RegulatorView` contract provides jurisdiction-gated access to full compliance details including transfer history, tier breakdown, and attestation provenance.
-
----
-
-## Demo Video
-
-> [Watch Demo on YouTube](https://youtu.be/6Dpsga9P-tQ?si=F8Y4riRZe84uKkcB)
-
-The demo shows the complete compliance lifecycle in 3-5 minutes:
-1. **CRE Check** — CRE workflow running Confidential HTTP calls; attestation written on-chain
-2. **Attestation** — Institution wallet's compliance details in the Institution tab
-3. **CCIP Bridge** — Bridging the attestation from Sepolia to Arb Sepolia
-4. **Destination** — Attestation arriving on Arb Sepolia; token transfer unlocked
-5. **Revocation** — Regulator tab: invalidating across both chains simultaneously
-6. **Four Views** — Same compliance data seen through Public / Institution / Regulator / Compliant Pool lenses
 
 ---
 
